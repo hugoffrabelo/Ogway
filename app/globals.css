@@ -1,0 +1,226 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-serif: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Sand canvas */
+  --background: #f1e8d8;
+  --foreground: #1e2e45;
+
+  /* Warm off-white surfaces */
+  --card: #f8f2e6;
+  --card-foreground: #1e2e45;
+  --popover: #f8f2e6;
+  --popover-foreground: #1e2e45;
+
+  /* Deep navy/petrol anchor */
+  --primary: #1e2e45;
+  --primary-foreground: #f1e8d8;
+
+  --secondary: #e7dcc6;
+  --secondary-foreground: #1e2e45;
+
+  --muted: #e7dcc6;
+  --muted-foreground: #6a6551;
+
+  /* Gold accent, used sparingly */
+  --accent: #c4a24c;
+  --accent-foreground: #1e2e45;
+
+  --destructive: oklch(0.577 0.245 27.325);
+
+  --border: #d8c9ac;
+  --input: #d8c9ac;
+  --ring: #c4a24c;
+
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--primary);
+  }
+}
+
+@layer utilities {
+  /* Fine tactile grain — gives the sand canvas the feel of premium paper */
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  }
+
+  /* Subtle frosted-glass panel with a fine gold hairline */
+  .glass-panel {
+    background: color-mix(in srgb, var(--card) 62%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
+    box-shadow:
+      0 1px 0 0 color-mix(in srgb, #ffffff 40%, transparent) inset,
+      0 24px 48px -28px rgba(30, 46, 69, 0.4);
+  }
+
+  /* Thin metallic gold divider with a soft sheen */
+  .gold-rule {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--accent) 85%, transparent) 20%,
+      var(--accent) 50%,
+      color-mix(in srgb, var(--accent) 85%, transparent) 80%,
+      transparent
+    );
+  }
+
+  /* Soft vignette + faint depth-of-field focus toward the center */
+  .hero-vignette {
+    background:
+      radial-gradient(
+        120% 90% at 50% 38%,
+        transparent 55%,
+        color-mix(in srgb, var(--primary) 12%, transparent) 100%
+      );
+  }
+
+  /* Fade the honeycomb mesh gently toward the edges */
+  .mesh-fade {
+    -webkit-mask-image: radial-gradient(
+      110% 85% at 70% 30%,
+      #000 30%,
+      transparent 78%
+    );
+    mask-image: radial-gradient(
+      110% 85% at 70% 30%,
+      #000 30%,
+      transparent 78%
+    );
+  }
+
+  /* Gold sheen sweep — a soft light travels across a card on hover */
+  .sheen {
+    position: relative;
+    overflow: hidden;
+  }
+  .sheen::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      transparent,
+      color-mix(in srgb, var(--accent) 22%, transparent) 45%,
+      color-mix(in srgb, #ffffff 30%, transparent) 55%,
+      transparent
+    );
+    transform: skewX(-16deg);
+    transition: left 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .sheen:hover::after {
+    left: 130%;
+  }
+
+  /* Animated gold hairline that draws in from the left when revealed */
+  .rule-draw {
+    transform-origin: left center;
+    animation: rule-draw 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  /* Elegant entrance: fade + slight rise, used with stagger delays */
+  .rise-in {
+    opacity: 0;
+    animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .rise-in-1 {
+    animation-delay: 0.05s;
+  }
+  .rise-in-2 {
+    animation-delay: 0.2s;
+  }
+  .rise-in-3 {
+    animation-delay: 0.35s;
+  }
+  .rise-in-4 {
+    animation-delay: 0.5s;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .parallax-slow {
+    transform: none !important;
+  }
+  .rise-in {
+    animation: none;
+    opacity: 1;
+  }
+}
