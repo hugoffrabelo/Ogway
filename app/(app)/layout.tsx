@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { AuthProvider, useAuth } from '@/lib/auth/context'
+import { QueryProvider } from '@/lib/query-provider'
 import { LoadingState } from '@/components/shared'
 
 // Gate de autenticação (front/back em origens separadas: o cookie de
@@ -30,8 +31,10 @@ function AuthGate({ children }: { children: React.ReactNode }) {
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <AuthProvider>
-      <AuthGate>{children}</AuthGate>
-    </AuthProvider>
+    <QueryProvider>
+      <AuthProvider>
+        <AuthGate>{children}</AuthGate>
+      </AuthProvider>
+    </QueryProvider>
   )
 }
