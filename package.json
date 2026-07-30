@@ -38,5 +38,6 @@
     "overrides": {
       "hono": "4.12.25"
     }
-  }
+  },
+  "packageManager": "pnpm@12.0.0-beta.1+sha512.6398a9d604341739854276620377eb8e15d538091170629307da1ed40b2d1161478378681e76f7142f7aec4d20ab9e4b8f72d2e38ae340976329eb54ef325e95"
 }

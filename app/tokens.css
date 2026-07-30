@@ -1,0 +1,47 @@
+/*
+  Camada de tokens puros — cor, raio.
+  Extraído de app/globals.css para ser a parte compartilhável entre
+  landing, cockpit e portal (todas vivem sob o mesmo layout raiz do
+  Next.js, então um único import em globals.css já cobre as três).
+
+  Nota: este projeto não tem variante dark ainda — @custom-variant dark
+  está declarado em globals.css mas nenhum valor [.dark] foi definido.
+  Não inventamos valores de escuro aqui; ficam pendentes até serem
+  definidos deliberadamente.
+*/
+
+:root {
+  color-scheme: light;
+
+  /* Sand canvas */
+  --background: #f1e8d8;
+  --foreground: #1e2e45;
+
+  /* Warm off-white surfaces */
+  --card: #f8f2e6;
+  --card-foreground: #1e2e45;
+  --popover: #f8f2e6;
+  --popover-foreground: #1e2e45;
+
+  /* Deep navy/petrol anchor */
+  --primary: #1e2e45;
+  --primary-foreground: #f1e8d8;
+
+  --secondary: #e7dcc6;
+  --secondary-foreground: #1e2e45;
+
+  --muted: #e7dcc6;
+  --muted-foreground: #6a6551;
+
+  /* Gold accent, used sparingly */
+  --accent: #c4a24c;
+  --accent-foreground: #1e2e45;
+
+  --destructive: oklch(0.577 0.245 27.325);
+
+  --border: #d8c9ac;
+  --input: #d8c9ac;
+  --ring: #c4a24c;
+
+  --radius: 0.5rem;
+}
