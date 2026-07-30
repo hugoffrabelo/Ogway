@@ -3,6 +3,7 @@
 import { useAuth } from '@/lib/auth/context'
 import { FilaPorPrazo } from '@/components/cockpit/fila-por-prazo'
 import { PainelIncidente } from '@/components/cockpit/painel-incidente'
+import { PainelSolicitacao } from '@/components/cockpit/painel-solicitacao'
 
 export default function CockpitPage() {
   const { user, logout } = useAuth()
@@ -33,6 +34,11 @@ export default function CockpitPage() {
       <h2 className="mt-10 text-sm font-medium text-muted-foreground">Incidentes</h2>
       <div className="mt-3">
         <PainelIncidente />
+      </div>
+
+      <h2 className="mt-10 text-sm font-medium text-muted-foreground">Solicitações de titulares</h2>
+      <div className="mt-3">
+        <PainelSolicitacao />
       </div>
     </div>
   )

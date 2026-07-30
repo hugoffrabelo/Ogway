@@ -57,6 +57,13 @@ export interface IncidenteCockpit extends Incidente {
   org: number
 }
 
+// Espelha apps/cockpit/serializers.py SolicitacaoTitularCockpitSerializer
+// — SolicitacaoTitular + org_nome/org (cross-cliente, todos os status).
+export interface SolicitacaoTitularCockpit extends SolicitacaoTitular {
+  org_nome: string
+  org: number
+}
+
 // Espelha apps/cockpit/serializers.py OrganizacaoCockpitSerializer.
 export interface Organizacao {
   id: number

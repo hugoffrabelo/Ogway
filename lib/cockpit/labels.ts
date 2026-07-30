@@ -29,6 +29,18 @@ export function labelTipoDireito(tipo: string): string {
   return TIPO_DIREITO_LABEL[tipo] ?? tipo
 }
 
+// Espelha apps/solicitacoes/models.py SolicitacaoTitular.Status.
+export const STATUS_SOLICITACAO_LABEL: Record<string, string> = {
+  recebida: 'Recebida',
+  em_analise: 'Em análise',
+  respondida: 'Respondida',
+  negada: 'Negada',
+}
+
+export function labelStatusSolicitacao(status: string): string {
+  return STATUS_SOLICITACAO_LABEL[status] ?? status
+}
+
 export function labelItemFila(item: ItemFila): string {
   if (item.tipo === 'incidente') {
     return `Incidente #${item.objeto.id} — ${labelEtapa(item.objeto.etapa)}`
