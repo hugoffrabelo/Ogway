@@ -25,6 +25,12 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
+  /* Semântica de status (StatusBadge/PrazoBadge) — gera as classes bg-status-*, text-status-*, border-status-* */
+  --color-status-ok: var(--status-ok);
+  --color-status-atencao: var(--status-atencao);
+  --color-status-critico: var(--status-critico);
+  --color-status-neutro: var(--status-neutro);
+
   --font-serif: var(--font-fraunces), Georgia, 'Times New Roman', serif;
   --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
 
