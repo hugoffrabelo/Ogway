@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { AuthProvider, useAuth } from '@/lib/auth/context'
+import { LoadingState } from '@/components/shared'
 
 // Gate de autenticação (front/back em origens separadas: o cookie de
 // sessão do Django só existe no navegador, então essa checagem tem que
@@ -19,7 +20,7 @@ function AuthGate({ children }: { children: React.ReactNode }) {
   if (status !== 'authenticated') {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <p className="text-sm text-muted-foreground">Carregando…</p>
+        <LoadingState label="Verificando sessão…" />
       </div>
     )
   }
