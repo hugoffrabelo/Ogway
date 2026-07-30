@@ -49,6 +49,20 @@ export interface SolicitacaoTitular {
   eliminacao_bloqueada_por_retencao: boolean
 }
 
+// Espelha apps/cockpit/serializers.py IncidenteCockpitSerializer —
+// Incidente + org_nome/org (cross-cliente, todos os estágios, ao
+// contrário de ItemFila que só traz o que já tem prazo correndo).
+export interface IncidenteCockpit extends Incidente {
+  org_nome: string
+  org: number
+}
+
+// Espelha apps/cockpit/serializers.py OrganizacaoCockpitSerializer.
+export interface Organizacao {
+  id: number
+  razao_social: string
+}
+
 // Espelha apps/cockpit/serializers.py ItemFilaSerializer, que serializa
 // apps/cockpit/services.py ItemFila (fila_hoje — cross-cliente, já
 // filtrada por RBAC no backend).

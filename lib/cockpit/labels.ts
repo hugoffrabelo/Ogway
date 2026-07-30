@@ -11,16 +11,27 @@ const TIPO_DIREITO_LABEL: Record<string, string> = {
   revogacao: 'Revogação de consentimento',
 }
 
-const ETAPA_LABEL: Record<string, string> = {
+// Espelha apps/incidentes/models.py Etapa — mesmos 6 estágios.
+export const ETAPA_LABEL: Record<string, string> = {
+  registrado: 'Registrado',
+  avaliando_risco: 'Avaliando risco',
   comunicando: 'Comunicando ANPD/titular',
   complementando: 'Complementando',
+  encerrado: 'Encerrado',
+  encerrado_sem_notificacao: 'Encerrado sem notificação',
+}
+
+export function labelEtapa(etapa: string): string {
+  return ETAPA_LABEL[etapa] ?? etapa
+}
+
+export function labelTipoDireito(tipo: string): string {
+  return TIPO_DIREITO_LABEL[tipo] ?? tipo
 }
 
 export function labelItemFila(item: ItemFila): string {
   if (item.tipo === 'incidente') {
-    const etapa = ETAPA_LABEL[item.objeto.etapa] ?? item.objeto.etapa
-    return `Incidente #${item.objeto.id} — ${etapa}`
+    return `Incidente #${item.objeto.id} — ${labelEtapa(item.objeto.etapa)}`
   }
-  const tipo = TIPO_DIREITO_LABEL[item.objeto.tipo_direito] ?? item.objeto.tipo_direito
-  return `Solicitação #${item.objeto.id} — ${tipo}`
+  return `Solicitação #${item.objeto.id} — ${labelTipoDireito(item.objeto.tipo_direito)}`
 }
