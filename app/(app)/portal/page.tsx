@@ -1,10 +1,11 @@
 'use client'
 
 import { useAuth } from '@/lib/auth/context'
-import { KpiCard, StatusBadge } from '@/components/shared'
+import { DashboardConformidade } from '@/components/portal/dashboard-conformidade'
+import { PendenteDecisao } from '@/components/portal/pendente-decisao'
+import { MatrizRiscoRaci } from '@/components/portal/matriz-risco-raci'
+import { RepositorioDocumentos } from '@/components/portal/repositorio-documentos'
 
-// Placeholder — Fase C do doc de frontend substitui isto por
-// DashboardConformidade etc. Dado fictício, só pra validar componentes.
 export default function PortalPage() {
   const { user, logout } = useAuth()
 
@@ -24,12 +25,23 @@ export default function PortalPage() {
         </button>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <KpiCard label="Grau de conformidade" valor="72%" variacao={{ texto: '+5 pontos no trimestre', tom: 'ok' }} />
-        <div className="flex flex-col justify-center gap-2 rounded-lg border border-border bg-card p-6">
-          <p className="text-sm text-muted-foreground">Pendências que exigem sua decisão</p>
-          <StatusBadge status="atencao" label="1 aprovação pendente" />
-        </div>
+      <div className="mt-8">
+        <DashboardConformidade />
+      </div>
+
+      <h2 className="mt-10 text-sm font-medium text-muted-foreground">Pendente da sua decisão</h2>
+      <div className="mt-3">
+        <PendenteDecisao />
+      </div>
+
+      <h2 className="mt-10 text-sm font-medium text-muted-foreground">Matriz de risco (RACI)</h2>
+      <div className="mt-3">
+        <MatrizRiscoRaci />
+      </div>
+
+      <h2 className="mt-10 text-sm font-medium text-muted-foreground">Documentos publicados</h2>
+      <div className="mt-3">
+        <RepositorioDocumentos />
       </div>
     </div>
   )
