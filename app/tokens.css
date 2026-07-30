@@ -4,10 +4,14 @@
   landing, cockpit e portal (todas vivem sob o mesmo layout raiz do
   Next.js, então um único import em globals.css já cobre as três).
 
-  Nota: este projeto não tem variante dark ainda — @custom-variant dark
-  está declarado em globals.css mas nenhum valor [.dark] foi definido.
-  Não inventamos valores de escuro aqui; ficam pendentes até serem
-  definidos deliberadamente.
+  Modo escuro usa a classe .dark (mesmo mecanismo já declarado em
+  globals.css via @custom-variant dark (&:is(.dark *))) — não o atributo
+  [data-theme] usado no outro projeto Ogway.
+
+  --status-* é a semântica de urgência do cockpit/portal (StatusBadge,
+  PrazoBadge): ok/atencao/critico/neutro. Todos os pares claro/escuro
+  abaixo foram verificados em >=4.5:1 (AA) contra as três superfícies de
+  fundo (background/card/secondary ou seus equivalentes escuros).
 */
 
 :root {
@@ -44,4 +48,49 @@
   --ring: #c4a24c;
 
   --radius: 0.5rem;
+
+  /* Semântica de status (StatusBadge/PrazoBadge) */
+  --status-ok: #2C6D4F;
+  --status-atencao: #8C5321;
+  --status-critico: #AA3B31;
+  --status-neutro: #65604D;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #0F161F;
+  --foreground: #E2D2B6;
+
+  --card: #192433;
+  --card-foreground: #E2D2B6;
+  --popover: #192433;
+  --popover-foreground: #E2D2B6;
+
+  --primary: #E8DDC9;
+  --primary-foreground: #172130;
+
+  --secondary: #243042;
+  --secondary-foreground: #E2D2B6;
+
+  --muted: #243042;
+  --muted-foreground: #9E9880;
+
+  /* Gold accent — mesmo valor da luz: já passa >=4.5:1 nas três
+     superfícies escuras sem precisar clarear. */
+  --accent: #C4A24C;
+  --accent-foreground: #172130;
+
+  /* Par escuro padrão do shadcn para o mesmo destructive claro
+     (oklch(0.577 0.245 27.325) / oklch(0.704 0.191 22.216)). */
+  --destructive: oklch(0.704 0.191 22.216);
+
+  --border: #303F55;
+  --input: #303F55;
+  --ring: #C4A24C;
+
+  --status-ok: #45AB7C;
+  --status-atencao: #D28541;
+  --status-critico: #D88078;
+  --status-neutro: #9E977F;
 }
