@@ -9,10 +9,14 @@ import { EmptyState, ErrorState, LoadingState } from '@/components/shared'
 // docs/frontend-cockpit-portal.md §4.3 — BPMN via bpmn-js, só-leitura
 // (NavigatedViewer: pan/zoom, sem edição — a autoria não é front-end,
 // ver apps/processos/models.py DiagramaProcesso).
-export function DiagramaBPMN() {
+interface DiagramaBPMNProps {
+  org?: number
+}
+
+export function DiagramaBPMN({ org }: DiagramaBPMNProps = {}) {
   const { data, status, error, refetch } = useQuery({
-    queryKey: ['portal', 'diagramas-processo'],
-    queryFn: fetchDiagramasProcesso,
+    queryKey: ['portal', 'diagramas-processo', org ?? null],
+    queryFn: () => fetchDiagramasProcesso(org),
   })
   const [selecionadoId, setSelecionadoId] = useState<number | null>(null)
 

@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useAuth } from '@/lib/auth/context'
 import { FilaPorPrazo } from '@/components/cockpit/fila-por-prazo'
 import { PainelIncidente } from '@/components/cockpit/painel-incidente'
@@ -17,13 +18,21 @@ export default function CockpitPage() {
             {user?.username} · {user?.papel}
           </p>
         </div>
-        <button
-          type="button"
-          onClick={() => logout()}
-          className="text-sm text-muted-foreground underline underline-offset-4"
-        >
-          Sair
-        </button>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/cockpit/cliente"
+            className="text-sm text-muted-foreground underline underline-offset-4"
+          >
+            Ver cliente específico →
+          </Link>
+          <button
+            type="button"
+            onClick={() => logout()}
+            className="text-sm text-muted-foreground underline underline-offset-4"
+          >
+            Sair
+          </button>
+        </div>
       </div>
 
       <h2 className="mt-10 text-sm font-medium text-muted-foreground">Fila por prazo</h2>

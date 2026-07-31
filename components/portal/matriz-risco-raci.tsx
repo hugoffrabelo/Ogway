@@ -26,10 +26,14 @@ const IMPACTOS: { valor: Impacto; label: string }[] = [
 // pronto da API (apps/riscos/models._MATRIZ_NIVEL) — não duplicamos essa
 // tabela no front, só posicionamos cada risco pela própria
 // probabilidade/impacto.
-export function MatrizRiscoRaci() {
+interface MatrizRiscoRaciProps {
+  org?: number
+}
+
+export function MatrizRiscoRaci({ org }: MatrizRiscoRaciProps = {}) {
   const { data, status, error, refetch } = useQuery({
-    queryKey: ['portal', 'riscos'],
-    queryFn: fetchRiscos,
+    queryKey: ['portal', 'riscos', org ?? null],
+    queryFn: () => fetchRiscos(org),
   })
 
   if (status === 'pending') return <LoadingState label="Carregando matriz de riscos…" />

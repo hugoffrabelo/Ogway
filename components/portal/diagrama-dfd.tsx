@@ -35,10 +35,14 @@ const COR_POR_TIPO: Record<string, string> = {
   Operador: 'var(--secondary-foreground)',
 }
 
-export function DiagramaDFD() {
+interface DiagramaDFDProps {
+  org?: number
+}
+
+export function DiagramaDFD({ org }: DiagramaDFDProps = {}) {
   const { data, status, error, refetch } = useQuery({
-    queryKey: ['portal', 'linhagem-mapa'],
-    queryFn: fetchMapaLinhagem,
+    queryKey: ['portal', 'linhagem-mapa', org ?? null],
+    queryFn: () => fetchMapaLinhagem(org),
   })
 
   const layout = useMemo(() => (data ? calcularLayout(data) : null), [data])

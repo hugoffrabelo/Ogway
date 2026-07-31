@@ -9,11 +9,15 @@ import type { Risco } from '@/lib/portal/types'
 // docs/frontend-cockpit-portal.md §4.3 — "único ponto não passivo do
 // portal." Mesma fonte de dado que MatrizRiscoRaci (['portal','riscos']),
 // só filtrada a `pendente_decisao_cliente` (blueprint §6.4).
+// Sem prop `org` de propósito: "aceitar risco" é a decisão do cliente
+// (RACI — o encarregado nunca assume a decisão do controlador, CLAUDE.md).
+// O DrilldownCliente do cockpit reaproveita MatrizRiscoRaci (só leitura),
+// nunca este componente.
 export function PendenteDecisao() {
   const queryClient = useQueryClient()
   const { data, status, error, refetch } = useQuery({
-    queryKey: ['portal', 'riscos'],
-    queryFn: fetchRiscos,
+    queryKey: ['portal', 'riscos', null],
+    queryFn: () => fetchRiscos(),
   })
 
   if (status === 'pending') return <LoadingState label="Carregando pendências…" />
@@ -43,7 +47,7 @@ export function PendenteDecisao() {
         <PendenteDecisaoRow
           key={risco.id}
           risco={risco}
-          onDone={() => queryClient.invalidateQueries({ queryKey: ['portal', 'riscos'] })}
+          onDone={() => queryClient.invalidateQueries({ queryKey: ['portal', 'riscos', null] })}
         />
       ))}
     </ul>

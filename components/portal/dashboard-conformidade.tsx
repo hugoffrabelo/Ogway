@@ -11,10 +11,15 @@ const GRAUS = ['basico', 'intermediario', 'avancado'] as const
 // O backend (apps/portal/services.dashboard) devolve uma nota por grau,
 // não uma nota única + rótulo — mostramos os três lado a lado em vez de
 // inventar uma agregação que a API não calcula.
-export function DashboardConformidade() {
+interface DashboardConformidadeProps {
+  /** Passado pelo DrilldownCliente do cockpit; ausente no portal (auto-escopado). */
+  org?: number
+}
+
+export function DashboardConformidade({ org }: DashboardConformidadeProps = {}) {
   const { data, status, error, refetch } = useQuery({
-    queryKey: ['portal', 'dashboard'],
-    queryFn: fetchDashboard,
+    queryKey: ['portal', 'dashboard', org ?? null],
+    queryFn: () => fetchDashboard(org),
   })
 
   if (status === 'pending') return <LoadingState label="Carregando dashboard…" />

@@ -5,14 +5,19 @@ import { fetchDocumentosPublicados } from '@/lib/portal/api'
 import { API_URL } from '@/lib/api-url'
 import { EmptyState, ErrorState, LoadingState } from '@/components/shared'
 
+interface RepositorioDocumentosProps {
+  org?: number
+}
+
 // docs/frontend-cockpit-portal.md §4.3 — "lista de documentos
-// publicados, com download." Filtro de estado já acontece no backend
-// (DocumentoViewSet.get_queryset), não aqui — rascunho/revisão/aprovado
-// nunca chegam a este componente.
-export function RepositorioDocumentos() {
+// publicados, com download." Filtro de estado='publicado' só se aplica
+// a cliente_leitor (DocumentoViewSet.get_queryset) — no DrilldownCliente
+// do cockpit (com `org`), o encarregado vê todos os estados, por isso o
+// rótulo de estado só aparece quando `org` está presente.
+export function RepositorioDocumentos({ org }: RepositorioDocumentosProps = {}) {
   const { data, status, error, refetch } = useQuery({
-    queryKey: ['portal', 'documentos'],
-    queryFn: fetchDocumentosPublicados,
+    queryKey: ['portal', 'documentos', org ?? null],
+    queryFn: () => fetchDocumentosPublicados(org),
   })
 
   if (status === 'pending') return <LoadingState label="Carregando documentos…" />
@@ -33,7 +38,10 @@ export function RepositorioDocumentos() {
       {data.map((doc) => (
         <li key={doc.id} className="flex items-center justify-between gap-3 p-4">
           <div>
-            <p className="text-sm font-medium text-foreground">{doc.titulo}</p>
+            <p className="text-sm font-medium text-foreground">
+              {doc.titulo}
+              {org && <span className="ml-2 text-xs text-muted-foreground">({doc.estado})</span>}
+            </p>
             <p className="text-xs text-muted-foreground">v{doc.versao}</p>
           </div>
           {doc.arquivo ? (
