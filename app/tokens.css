@@ -54,6 +54,11 @@
   --status-atencao: #8C5321;
   --status-critico: #AA3B31;
   --status-neutro: #65604D;
+
+  /* Véu por trás de modal/dialog (ConfirmacaoDestrutiva) — não é cor de
+     marca, é mecânica de UI; ainda assim vive aqui, nunca hardcoded no
+     componente. */
+  --overlay: rgba(30, 46, 69, 0.6);
 }
 
 .dark {
@@ -93,4 +98,6 @@
   --status-atencao: #D28541;
   --status-critico: #D88078;
   --status-neutro: #9E977F;
+
+  --overlay: rgba(0, 0, 0, 0.6);
 }

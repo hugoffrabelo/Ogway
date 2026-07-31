@@ -31,6 +31,8 @@
   --color-status-critico: var(--status-critico);
   --color-status-neutro: var(--status-neutro);
 
+  --color-overlay: var(--overlay);
+
   --font-serif: var(--font-fraunces), Georgia, 'Times New Roman', serif;
   --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
 

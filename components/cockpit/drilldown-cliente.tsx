@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
-import { fetchIncidentesCockpit, fetchOrganizacoes, fetchSolicitacoesCockpit } from '@/lib/cockpit/api'
+import { fetchIncidentesCockpit, fetchSolicitacoesCockpit } from '@/lib/cockpit/api'
 import type { IncidenteCockpit, SolicitacaoTitularCockpit } from '@/lib/cockpit/types'
+import { useOrgAtivo } from '@/lib/cockpit/org-context'
 import { EmptyState } from '@/components/shared'
 import { DashboardConformidade } from '@/components/portal/dashboard-conformidade'
 import { MatrizRiscoRaci } from '@/components/portal/matriz-risco-raci'
@@ -14,68 +15,43 @@ import { IncidenteRow } from './incidente-row'
 import { SolicitacaoRow } from './solicitacao-row'
 
 // docs/frontend-cockpit-portal.md §4.2 — "tudo de um org_id: espelha o
-// que o cliente vê no portal, mais a camada de trabalho." Reaproveita os
-// componentes do portal (agora com `org` opcional) e as linhas de
-// incidente/solicitação já construídas — filtradas pro cliente escolhido,
-// usando as mesmas queries ['cockpit','incidentes']/['cockpit','solicitacoes']
-// que a FilaPorPrazo/PainelIncidente/PainelSolicitacao já populam (mesmo
-// cache, sem refetch se o usuário já visitou essas seções).
+// que o cliente vê no portal, mais a camada de trabalho." O cliente
+// ativo vem do OrgContext (layout de /cockpit/cliente, §7.2) — não é
+// mais estado local desta página, então sobrevive à navegação entre
+// "visão geral" e "RoPA".
 //
 // De propósito NÃO reaproveita PendenteDecisao: "aceitar risco" é
 // decisão do cliente (RACI, CLAUDE.md) — aqui é só leitura, via
 // MatrizRiscoRaci.
 export function DrilldownCliente() {
-  const { data: orgs, status: orgsStatus } = useQuery({
-    queryKey: ['cockpit', 'organizacoes'],
-    queryFn: fetchOrganizacoes,
-  })
-  const [orgId, setOrgId] = useState<number | null>(null)
+  const { orgAtivo } = useOrgAtivo()
 
   const { data: incidentes } = useQuery({
     queryKey: ['cockpit', 'incidentes'],
     queryFn: fetchIncidentesCockpit,
-    enabled: orgId !== null,
+    enabled: orgAtivo !== null,
   })
   const { data: solicitacoes } = useQuery({
     queryKey: ['cockpit', 'solicitacoes'],
     queryFn: fetchSolicitacoesCockpit,
-    enabled: orgId !== null,
+    enabled: orgAtivo !== null,
   })
 
-  return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <label htmlFor="drilldown-org" className="block text-xs text-muted-foreground">
-          Cliente
-        </label>
-        <select
-          id="drilldown-org"
-          value={orgId ?? ''}
-          onChange={(e) => setOrgId(e.target.value ? Number(e.target.value) : null)}
-          className="mt-1 w-full max-w-sm rounded-md border border-input bg-background px-2 py-1.5 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          <option value="">{orgsStatus === 'pending' ? 'Carregando…' : 'Selecione um cliente'}</option>
-          {orgs?.map((o) => (
-            <option key={o.id} value={o.id}>
-              {o.razao_social}
-            </option>
-          ))}
-        </select>
-      </div>
+  if (orgAtivo === null) {
+    return (
+      <EmptyState
+        titulo="Escolha um cliente"
+        descricao="Selecione um cliente no seletor acima para ver tudo sobre ele: conformidade, riscos, documentos, diagramas, RoPA e a fila de trabalho."
+      />
+    )
+  }
 
-      {orgId === null ? (
-        <EmptyState
-          titulo="Escolha um cliente"
-          descricao="Selecione um cliente acima para ver tudo sobre ele: conformidade, riscos, documentos, diagramas e a fila de trabalho."
-        />
-      ) : (
-        <DrilldownConteudo
-          orgId={orgId}
-          incidentes={incidentes?.filter((i) => i.org === orgId) ?? []}
-          solicitacoes={solicitacoes?.filter((s) => s.org === orgId) ?? []}
-        />
-      )}
-    </div>
+  return (
+    <DrilldownConteudo
+      orgId={orgAtivo.id}
+      incidentes={incidentes?.filter((i) => i.org === orgAtivo.id) ?? []}
+      solicitacoes={solicitacoes?.filter((s) => s.org === orgAtivo.id) ?? []}
+    />
   )
 }
 
@@ -90,6 +66,15 @@ function DrilldownConteudo({
 }) {
   return (
     <div className="flex flex-col gap-8">
+      <div>
+        <Link
+          href="/cockpit/cliente/ropa"
+          className="text-sm font-medium text-primary underline underline-offset-4"
+        >
+          Gerenciar RoPA deste cliente →
+        </Link>
+      </div>
+
       <Secao titulo="Conformidade">
         <DashboardConformidade org={orgId} />
       </Secao>
