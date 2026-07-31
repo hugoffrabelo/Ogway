@@ -1,9 +1,19 @@
-// Espelha apps/portal/services.py dashboard().
+interface NotaPerfil {
+  nota: number | null
+  avaliados: number
+  total: number
+}
+
+// Espelha apps/portal/services.py dashboard(). nota_lgpd traz
+// avaliados/total junto da nota (não só o número) — controle sem
+// avaliação conta como não_aplicado no cálculo (CLAUDE.md: conservador,
+// não infla nota de quem avaliou pouco), então a nota sozinha não
+// distingue "não avaliado" de "avaliado como zero".
 export interface DashboardData {
   nota_lgpd: {
-    basico: number | null
-    intermediario: number | null
-    avancado: number | null
+    basico: NotaPerfil
+    intermediario: NotaPerfil
+    avancado: NotaPerfil
   }
   incidentes_abertos: number
   solicitacoes_pendentes: number

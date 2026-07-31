@@ -66,12 +66,18 @@ function DrilldownConteudo({
 }) {
   return (
     <div className="flex flex-col gap-8">
-      <div>
+      <div className="flex flex-wrap gap-4">
         <Link
           href="/cockpit/cliente/ropa"
           className="text-sm font-medium text-primary underline underline-offset-4"
         >
           Gerenciar RoPA deste cliente →
+        </Link>
+        <Link
+          href="/cockpit/cliente/frameworks"
+          className="text-sm font-medium text-primary underline underline-offset-4"
+        >
+          Avaliar controles (SoA) →
         </Link>
       </div>
 

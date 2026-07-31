@@ -2,15 +2,17 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { fetchDashboard } from '@/lib/portal/api'
-import { GRAU_LABEL, formatarNota } from '@/lib/portal/labels'
+import { descricaoNota, GRAU_LABEL } from '@/lib/frameworks/labels'
+import type { Perfil } from '@/lib/frameworks/types'
 import { ErrorState, KpiCard, LoadingState } from '@/components/shared'
 
-const GRAUS = ['basico', 'intermediario', 'avancado'] as const
+const GRAUS: Perfil[] = ['basico', 'intermediario', 'avancado']
 
 // docs/frontend-cockpit-portal.md §4.3 — "nota + degrau de maturidade."
-// O backend (apps/portal/services.dashboard) devolve uma nota por grau,
-// não uma nota única + rótulo — mostramos os três lado a lado em vez de
-// inventar uma agregação que a API não calcula.
+// O backend (apps/portal/services.dashboard) devolve nota+avaliados+total
+// por grau — "não avaliado" (avaliados===0) nunca aparece como "0/100"
+// (revisão do plano de ControleAvaliacao: zero só quando há avaliação
+// de verdade por trás).
 interface DashboardConformidadeProps {
   /** Passado pelo DrilldownCliente do cockpit; ausente no portal (auto-escopado). */
   org?: number
@@ -37,9 +39,17 @@ export function DashboardConformidade({ org }: DashboardConformidadeProps = {}) 
       <div>
         <h3 className="text-sm font-medium text-muted-foreground">Nota de conformidade LGPD</h3>
         <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {GRAUS.map((grau) => (
-            <KpiCard key={grau} label={GRAU_LABEL[grau]} valor={formatarNota(data.nota_lgpd[grau])} />
-          ))}
+          {GRAUS.map((grau) => {
+            const { texto, cobertura } = descricaoNota(data.nota_lgpd[grau])
+            return (
+              <KpiCard
+                key={grau}
+                label={GRAU_LABEL[grau]}
+                valor={texto}
+                variacao={cobertura ? { texto: cobertura, tom: 'neutro' } : undefined}
+              />
+            )
+          })}
         </div>
       </div>
 
