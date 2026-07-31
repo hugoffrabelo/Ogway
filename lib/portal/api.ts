@@ -1,6 +1,6 @@
 import { API_URL } from '@/lib/api-url'
 import { apiPost } from '@/lib/api-post'
-import type { DashboardData, Documento, Risco } from './types'
+import type { DashboardData, DiagramaProcesso, Documento, MapaLinhagem, Risco } from './types'
 
 // Sem ?org= em nenhuma chamada aqui: cliente_leitor é preso à própria
 // org pelo TenantMiddleware automaticamente (apps/core/middleware.py) —
@@ -32,6 +32,22 @@ export async function fetchDocumentosPublicados(): Promise<Documento[]> {
   const res = await fetch(`${API_URL}/api/documentos/`, { credentials: 'include' })
   if (!res.ok) {
     throw new Error('Não foi possível carregar os documentos.')
+  }
+  return res.json()
+}
+
+export async function fetchMapaLinhagem(): Promise<MapaLinhagem> {
+  const res = await fetch(`${API_URL}/api/linhagem/fluxos/mapa/`, { credentials: 'include' })
+  if (!res.ok) {
+    throw new Error('Não foi possível carregar o mapa de fluxo de dados.')
+  }
+  return res.json()
+}
+
+export async function fetchDiagramasProcesso(): Promise<DiagramaProcesso[]> {
+  const res = await fetch(`${API_URL}/api/processos/diagramas/`, { credentials: 'include' })
+  if (!res.ok) {
+    throw new Error('Não foi possível carregar os diagramas de processo.')
   }
   return res.json()
 }

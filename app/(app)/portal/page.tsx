@@ -5,6 +5,8 @@ import { DashboardConformidade } from '@/components/portal/dashboard-conformidad
 import { PendenteDecisao } from '@/components/portal/pendente-decisao'
 import { MatrizRiscoRaci } from '@/components/portal/matriz-risco-raci'
 import { RepositorioDocumentos } from '@/components/portal/repositorio-documentos'
+import { DiagramaDFD } from '@/components/portal/diagrama-dfd'
+import { DiagramaBPMN } from '@/components/portal/diagrama-bpmn'
 
 export default function PortalPage() {
   const { user, logout } = useAuth()
@@ -42,6 +44,16 @@ export default function PortalPage() {
       <h2 className="mt-10 text-sm font-medium text-muted-foreground">Documentos publicados</h2>
       <div className="mt-3">
         <RepositorioDocumentos />
+      </div>
+
+      <h2 className="mt-10 text-sm font-medium text-muted-foreground">Fluxo de dados (DFD)</h2>
+      <div className="mt-3">
+        <DiagramaDFD />
+      </div>
+
+      <h2 className="mt-10 text-sm font-medium text-muted-foreground">Diagrama de processo (BPMN)</h2>
+      <div className="mt-3">
+        <DiagramaBPMN />
       </div>
     </div>
   )

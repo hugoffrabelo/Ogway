@@ -5,6 +5,11 @@ import { useRouter } from 'next/navigation'
 import { AuthProvider, useAuth } from '@/lib/auth/context'
 import { QueryProvider } from '@/lib/query-provider'
 import { LoadingState } from '@/components/shared'
+// Só cockpit/portal usam bpmn-js (DiagramaBPMN) — CSS fica escopado aqui,
+// não na landing.
+import 'bpmn-js/dist/assets/diagram-js.css'
+import 'bpmn-js/dist/assets/bpmn-js.css'
+import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css'
 
 // Gate de autenticação (front/back em origens separadas: o cookie de
 // sessão do Django só existe no navegador, então essa checagem tem que

@@ -50,3 +50,38 @@ export interface Documento {
   criado_em: string
   atualizado_em: string
 }
+
+// Espelha apps/linhagem/services.py mapa() — grafo pronto pra layout via
+// dagre/elk. Chave do nó é "Tipo:id" (ex.: "FonteColeta:3").
+export interface MapaLinhagem {
+  nos: Record<
+    string,
+    {
+      tipo: 'FonteColeta' | 'Repositorio' | 'Operador'
+      nome: string
+      // Só presente pra nós Operador (a API omite a chave pros demais
+      // tipos, não manda null).
+      sem_dpa?: boolean | null
+    }
+  >
+  arestas: {
+    origem: string
+    destino: string
+    sensivel: boolean
+    internacional: boolean
+  }[]
+}
+
+// Espelha apps/processos/serializers.py DiagramaProcessoSerializer.
+export interface DiagramaProcesso {
+  id: number
+  atividade: number
+  titulo: string
+  xml_bpmn: string
+  versao: string
+  validado_em: string | null
+  inconsistencias: string[]
+  valido: boolean
+  criado_em: string
+  atualizado_em: string
+}
