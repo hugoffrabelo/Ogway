@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Fraunces, Instrument_Sans } from 'next/font/google'
+import { Cinzel, Fraunces, Instrument_Sans, Poppins } from 'next/font/google'
 import './globals.css'
 
 const fraunces = Fraunces({
@@ -12,6 +12,26 @@ const fraunces = Fraunces({
 const instrument = Instrument_Sans({
   subsets: ['latin'],
   variable: '--font-instrument',
+  display: 'swap',
+})
+
+// Referência Lovisa Malin, sendo aplicada seção a seção pela landing (por
+// enquanto: Pillars e o cabeçalho) — não substitui Fraunces/Instrument Sans
+// nas partes que ainda não passaram por essa repaginação. Cinzel é a
+// alternativa gratuita padrão pra Trajan Pro (fonte paga da Adobe usada no
+// Figma de referência) — mesma inspiração em maiúsculas romanas
+// inscricionais, sem depender de assinatura.
+const cinzel = Cinzel({
+  subsets: ['latin'],
+  weight: ['500'],
+  variable: '--font-cinzel',
+  display: 'swap',
+})
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '500'],
+  variable: '--font-poppins',
   display: 'swap',
 })
 
@@ -35,7 +55,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${fraunces.variable} ${instrument.variable} bg-background`}
+      className={`${fraunces.variable} ${instrument.variable} ${cinzel.variable} ${poppins.variable} bg-background`}
     >
       <body className="antialiased">
         {children}

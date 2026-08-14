@@ -3,6 +3,7 @@ import { Hero } from '@/components/hero'
 import { Benefits } from '@/components/benefits'
 import { HowItWorks } from '@/components/how-it-works'
 import { WhyDifferent } from '@/components/why-different'
+import { Pillars } from '@/components/pillars'
 import { Trust } from '@/components/trust'
 import { About } from '@/components/about'
 import { Contact } from '@/components/contact'
@@ -17,6 +18,7 @@ export default function Page() {
         <Benefits />
         <HowItWorks />
         <WhyDifferent />
+        <Pillars />
         <Trust />
         <About />
         <Contact />

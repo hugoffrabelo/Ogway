@@ -64,37 +64,55 @@ export function ShellPattern({
   )
 }
 
-/** A single small scute emblem, used as the brand mark. */
+// Marca da Ogway definida pelo cliente (hexágono navy + cubo bicolor
+// camelo/dourado) — cores fixas (--lovisa-* em app/tokens.css), não segue
+// currentColor como o resto deste arquivo, porque é uma marca, não um
+// ícone recolorável.
+const MARK_NAVY = 'var(--lovisa-navy)'
+const MARK_CAMEL_DARK = 'var(--lovisa-camel)'
+const MARK_CAMEL_LIGHT = 'var(--lovisa-camel-light)'
+
+/** A marca da Ogway: hexágono com um cubo bicolor no centro. */
 export function ShellMark({ className }: { className?: string }) {
-  const size = 9
-  const ring = (r: number, cxy: number) => {
-    const pts: string[] = []
-    for (let i = 0; i < 6; i++) {
-      const angle = (Math.PI / 180) * (60 * i - 90)
-      pts.push(
-        `${(cxy + r * Math.cos(angle)).toFixed(2)},${(cxy + r * Math.sin(angle)).toFixed(2)}`,
-      )
-    }
-    return pts.join(' ')
-  }
   return (
     <svg
       aria-hidden="true"
       viewBox="0 0 24 24"
       className={cn('h-6 w-6', className)}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.25}
-      strokeLinejoin="round"
     >
-      <polygon points={ring(11, 12)} />
-      <polygon points={ring(6.5, 12)} />
-      <line x1="12" y1="1" x2="12" y2="5.5" />
-      <line x1="21.5" y1="6.5" x2="17.6" y2="8.8" />
-      <line x1="21.5" y1="17.5" x2="17.6" y2="15.2" />
-      <line x1="12" y1="23" x2="12" y2="18.5" />
-      <line x1="2.5" y1="17.5" x2="6.4" y2="15.2" />
-      <line x1="2.5" y1="6.5" x2="6.4" y2="8.8" />
+      <polygon
+        points="12,1.5 21.09,6.75 21.09,17.25 12,22.5 2.91,17.25 2.91,6.75"
+        fill="none"
+        stroke={MARK_NAVY}
+        strokeWidth={2.2}
+        strokeLinejoin="round"
+      />
+      <polygon points="12,7 16.33,9.5 16.33,14.5 12,17" fill={MARK_CAMEL_LIGHT} />
+      <polygon points="12,7 7.67,9.5 7.67,14.5 12,17" fill={MARK_CAMEL_DARK} />
+    </svg>
+  )
+}
+
+/**
+ * Variante monocromática da marca, seguindo os arquivos em
+ * logos/logo_marcadagua/ (clara e escura) — usa currentColor, ao contrário
+ * do ShellMark (que tem cor fixa), justamente pra servir de marca d'água
+ * translúcida tanto sobre fundo escuro quanto claro.
+ */
+export function ShellWatermark({ className }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className={className}>
+      <polygon
+        points="12,1.5 21.09,6.75 21.09,17.25 12,22.5 2.91,17.25 2.91,6.75"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2.2}
+        strokeLinejoin="round"
+      />
+      <polygon
+        points="12,7 16.33,9.5 16.33,14.5 12,17 7.67,14.5 7.67,9.5"
+        fill="currentColor"
+      />
     </svg>
   )
 }

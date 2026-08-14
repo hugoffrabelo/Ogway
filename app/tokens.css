@@ -59,6 +59,15 @@
      marca, é mecânica de UI; ainda assim vive aqui, nunca hardcoded no
      componente. */
   --overlay: rgba(30, 46, 69, 0.6);
+
+  /* Paleta de referência do Figma "Lovisa Malin Hotel", usada seção a
+     seção na landing (Hero, Pillars, Benefits, cabeçalho) como bloco de
+     cor fixo — não é uma variação de --primary/--accent nem muda com o
+     tema: mesmo valor em claro e escuro, de propósito. Cockpit/portal não
+     usam essas variáveis. */
+  --lovisa-navy: #043c53;
+  --lovisa-camel: #bda078;
+  --lovisa-camel-light: #e3c99c;
 }
 
 .dark {
@@ -100,4 +109,8 @@
   --status-neutro: #9E977F;
 
   --overlay: rgba(0, 0, 0, 0.6);
+
+  --lovisa-navy: #043c53;
+  --lovisa-camel: #bda078;
+  --lovisa-camel-light: #e3c99c;
 }

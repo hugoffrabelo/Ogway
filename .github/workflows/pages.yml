@@ -1,0 +1,67 @@
+name: Deploy landing to GitHub Pages
+
+# Publica só a landing pública (app/page.tsx e o que ela usa) como site
+# estático. app/(app) (cockpit/portal) e app/login dependem de um backend
+# e de autenticação de verdade — não fazem sentido num export estático, e
+# são removidos do checkout antes do build neste workflow (só nesta cópia
+# efêmera do runner, nunca no repositório).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Actions pinadas por SHA de commit, não por tag — mesma política do
+      # ci.yml deste repositório. Atualização manual.
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Instalar dependências (lockfile travado)
+        run: pnpm install --frozen-lockfile
+
+      - name: Remover cockpit/portal/login do build da landing
+        run: rm -rf "app/(app)" app/login
+
+      - name: Build estático (só landing)
+        run: pnpm build
+        env:
+          GH_PAGES: 'true'
+          NEXT_PUBLIC_BASE_PATH: /Ogway
+          # Dummy: lib/api-url.ts exige a variável na importação, mas a
+          # landing não faz nenhuma chamada de API — mesmo padrão do ci.yml.
+          NEXT_PUBLIC_API_URL: http://api.ci.invalid
+
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: ./out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
