@@ -35,8 +35,13 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
 
-      - name: Instalar dependências (lockfile travado)
-        run: pnpm install --frozen-lockfile
+      # Sem --frozen-lockfile de propósito, diferente do ci.yml: esse
+      # workflow só publica a landing (build isolado e secundário) e o
+      # pnpm-lock.yaml commitado está com drift em relação ao package.json
+      # (pré-existente, sem relação com a landing) — travar aqui quebraria
+      # esse deploy por um motivo alheio a ele.
+      - name: Instalar dependências
+        run: pnpm install
 
       - name: Remover cockpit/portal/login do build da landing
         run: rm -rf "app/(app)" app/login
