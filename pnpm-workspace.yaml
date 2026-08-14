@@ -1,0 +1,19 @@
+# nodeLinker: hoisted — Windows sem "Developer Mode" nem processo elevado
+# não consegue criar os symlinks que pnpm usa por padrão (erro EPERM/1314).
+# Em pnpm 12 (beta, pinado em package.json), essa configuração mudou de
+# .npmrc pra cá — confirmado empiricamente em 2026-07-31 (.npmrc com
+# node-linker=hoisted era silenciosamente ignorado). Linux/Mac (inclusive o
+# CI) e Windows com Developer Mode não precisam disso.
+nodeLinker: hoisted
+
+# Scripts de build/postinstall que rodam sem prompt interativo (pnpm exige
+# aprovação explícita por padrão — supply chain). Nenhum dos dois é rede:
+# sharp compila um binário nativo de imagem (usado pelo next/image); msw
+# gera o service worker de mock usado pelos testes (ver CLAUDE.md, ## Testes).
+allowBuilds:
+  msw: true
+  sharp: true
+  # unrs-resolver: binário nativo usado por eslint-plugin-import (via
+  # eslint-config-next) pra resolver imports TS — sem ele o resolver cai pra
+  # um fallback mais lento em JS puro, mas ESLint funciona igual.
+  unrs-resolver: true
