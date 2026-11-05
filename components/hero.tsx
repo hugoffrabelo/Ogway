@@ -42,13 +42,23 @@ export function Hero() {
           className="max-w-3xl text-4xl leading-[1.02] font-medium tracking-[0.01em] text-balance text-primary uppercase sm:text-6xl lg:text-7xl lg:text-white"
           style={headingFont}
         >
-          Você cuida das pessoas.
+          Você{' '}
+          {/* dourado: camelo no navy (desktop); no creme do celular, o tom
+              escurecido para o contraste de texto grande (4:1) */}
+          <span className="text-[var(--lovisa-camel-ink)] lg:text-[var(--lovisa-camel)]">cuida</span>{' '}
+          das pessoas.
+          {/* segunda linha em caligrafia, no mesmo tamanho do título */}
+          <span
+            className="mt-2 block leading-[1.15] tracking-normal normal-case lg:mt-3"
+            style={{ fontFamily: 'var(--font-script)', fontWeight: 400 }}
+          >
+            Nós cuidamos da confiança delas.
+          </span>
         </h1>
 
-        <p className="mt-8 max-w-[34rem] text-xl leading-relaxed text-foreground sm:text-2xl lg:text-white/90">
-          Nós cuidamos da confiança delas. Adequação à LGPD, encarregado de
-          dados (DPO) e consultoria para clínicas de Porto Alegre e região, com
-          quem entende de saúde.
+        <p className="mt-8 max-w-[34rem] text-lg leading-relaxed text-foreground sm:text-xl lg:text-white/90">
+          Adequação à LGPD, encarregado de dados (DPO) e consultoria para
+          clínicas de Porto Alegre e região, com quem entende de saúde.
         </p>
 
         <div className="rise-in rise-in-1 mt-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">

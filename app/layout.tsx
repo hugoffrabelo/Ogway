@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Cinzel, Fraunces, Instrument_Sans, Poppins } from 'next/font/google'
+import { Cinzel, Fraunces, Instrument_Sans, Pinyon_Script, Poppins } from 'next/font/google'
 import './globals.css'
 import { SITE_URL, url } from '@/lib/seo'
 
@@ -26,6 +26,15 @@ const cinzel = Cinzel({
   subsets: ['latin'],
   weight: ['500'],
   variable: '--font-cinzel',
+  display: 'swap',
+})
+
+// Caligrafia de pena para a segunda linha do título do hero ("Nós cuidamos
+// da confiança delas."). Só um peso; latin-ext cobre ç, ã e acentos.
+const pinyon = Pinyon_Script({
+  subsets: ['latin', 'latin-ext'],
+  weight: '400',
+  variable: '--font-script',
   display: 'swap',
 })
 
@@ -74,7 +83,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${fraunces.variable} ${instrument.variable} ${cinzel.variable} ${poppins.variable} bg-background`}
+      className={`${fraunces.variable} ${instrument.variable} ${cinzel.variable} ${pinyon.variable} ${poppins.variable} bg-background`}
     >
       <body className="antialiased">
         {children}
