@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <!-- Marca da Ogway (ShellMark): hexágono navy preenchido com o cubo
-       bicolor camelo. Preenchido, e não só contornado, para continuar
-       legível a 16 px e em abas de tema escuro. -->
-  <polygon points="16,1 29,8.5 29,23.5 16,31 3,23.5 3,8.5" fill="#043c53" stroke="#f1e8d8" stroke-width="1.2" stroke-linejoin="round"/>
-  <polygon points="16,8.6 22.4,12.3 22.4,19.7 16,23.4" fill="#e3c99c"/>
-  <polygon points="16,8.6 9.6,12.3 9.6,19.7 16,23.4" fill="#bda078"/>
-</svg>

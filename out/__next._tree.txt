@@ -1,3 +1,0 @@
-:HL["/Ogway/_next/static/css/16b6ba867880a3ab.css","style"]
-1:[["children",{"s":"__PAGE__","h":160}]]
-0:{"b":"D4fC9eb-_sPbK6ZHGxHvE","t":{"t":{"s":"","h":80,"c":"$Q1"}}}

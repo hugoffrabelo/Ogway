@@ -1,7 +1,0 @@
-User-Agent: *
-Allow: /
-Disallow: /cockpit
-Disallow: /portal
-Disallow: /login
-
-Sitemap: https://hugoffrabelo.github.io/Ogway/sitemap.xml
