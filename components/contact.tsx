@@ -82,8 +82,8 @@ export function Contact() {
             Comece por uma conversa
           </h2>
           <p className="mt-6 max-w-[60ch] text-lg font-light leading-relaxed text-white/90">
-            Conte um pouco sobre a sua clínica. Respondo pessoalmente, sem robôs
-            e sem pressa, para entender como posso ajudar.
+            Conte um pouco sobre a sua clínica. Respondemos pessoalmente, sem robôs
+            e sem pressa, para entender como podemos ajudar.
           </p>
           {CONTACT_EMAIL && (
             <p className="mt-6 font-light text-white/90">
@@ -114,7 +114,7 @@ export function Contact() {
               <p className="mt-4 max-w-sm leading-relaxed text-foreground">
                 {viaMailto
                   ? 'Abrimos o seu e-mail com a mensagem pronta. É só enviar por lá.'
-                  : 'Recebi sua mensagem e respondo em até dois dias úteis.'}
+                  : 'Recebemos sua mensagem e respondemos em até dois dias úteis.'}
               </p>
             </div>
           ) : (
@@ -200,7 +200,7 @@ export function Contact() {
                 {status === 'sending' ? 'Enviando…' : 'Agendar uma conversa'}
               </button>
               <p className="text-center text-sm text-foreground/80">
-                Uso seus dados só para responder este contato. Detalhes no{' '}
+                Usamos seus dados só para responder a este contato. Detalhes no{' '}
                 <Link href="/privacidade" className="underline underline-offset-2">
                   aviso de privacidade
                 </Link>

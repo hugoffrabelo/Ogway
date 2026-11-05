@@ -6,8 +6,8 @@
  * Porto Alegre"), e os de saúde não citam a cidade. Texto original, sem
  * repetir a home — o Google penaliza páginas quase iguais.
  *
- * CONFIRMAR antes de publicar: atendimento presencial em Porto Alegre e
- * região metropolitana (texto de `atendimento`).
+ * Atendimento só online (sem visita presencial) — texto de `ATENDIMENTO`.
+ * Voz da Ogway sempre na 1ª pessoa do plural.
  */
 
 export type Secao = { titulo: string; paragrafos?: string[]; lista?: string[] }
@@ -27,7 +27,7 @@ export type PaginaServico = {
 }
 
 export const ATENDIMENTO =
-  'Atendimento em Porto Alegre e região metropolitana, presencial ou online, e online para clínicas de todo o Brasil.'
+  'Atendimento online para clínicas de Porto Alegre, da região metropolitana e de todo o Brasil.'
 
 export const PAGINAS: PaginaServico[] = [
   {
@@ -37,7 +37,7 @@ export const PAGINAS: PaginaServico[] = [
       'Encarregado de dados (DPO) terceirizado para clínicas e consultórios em Porto Alegre. Atendimento a pacientes, incidentes e LGPD em dia todo mês.',
     h1: 'DPO para clínicas em Porto Alegre',
     intro:
-      'Encarregado de dados terceirizado para clínicas, consultórios e laboratórios. Eu assumo o papel de DPO da sua clínica e mantenho a LGPD funcionando no dia a dia, sem você precisar montar uma equipe.',
+      'Encarregado de dados terceirizado para clínicas, consultórios e laboratórios. Assumimos o papel de DPO da sua clínica e mantemos a LGPD funcionando no dia a dia, sem você precisar montar uma equipe.',
     servicoSchema: 'Encarregado de proteção de dados (DPO) terceirizado',
     secoes: [
       {
@@ -62,7 +62,7 @@ export const PAGINAS: PaginaServico[] = [
       {
         titulo: 'Como começa',
         paragrafos: [
-          'Se a clínica ainda não passou por uma adequação, começamos por ela. Se já tem documentação, faço uma revisão do que existe e assumo a partir daí. A nomeação é formalizada em termo próprio e o contato do encarregado passa a constar no site e na recepção.',
+          'Se a clínica ainda não passou por uma adequação, começamos por ela. Se já tem documentação, fazemos uma revisão do que existe e assumimos a partir daí. A nomeação é formalizada em termo próprio e o contato do encarregado passa a constar no site e na recepção.',
         ],
       },
     ],
@@ -132,7 +132,7 @@ export const PAGINAS: PaginaServico[] = [
       },
       {
         p: 'Depois da adequação, acabou?',
-        r: 'A LGPD exige que a conformidade se mantenha. Por isso a última etapa é contínua: pode ficar com a equipe da clínica ou comigo, como encarregado.',
+        r: 'A LGPD exige que a conformidade se mantenha. Por isso a última etapa é contínua: pode ficar com a equipe da clínica ou conosco, como encarregado.',
       },
     ],
     interesse: 'Adequação completa',
@@ -180,7 +180,7 @@ export const PAGINAS: PaginaServico[] = [
       },
       {
         p: 'A revisão de contratos substitui um advogado?',
-        r: 'A revisão cobre as cláusulas de proteção de dados. Questões contratuais de outra natureza continuam com o advogado da clínica, com quem posso trabalhar em conjunto.',
+        r: 'A revisão cobre as cláusulas de proteção de dados. Questões contratuais de outra natureza continuam com o advogado da clínica, com quem podemos trabalhar em conjunto.',
       },
     ],
     interesse: 'Consultoria e adequação parcial',
@@ -192,11 +192,11 @@ export const PAGINAS: PaginaServico[] = [
       'Política de privacidade, mapeamento de processos, ROPA, RIPD e plano de incidentes feitos sob medida para clínicas em Porto Alegre. Nada de modelo copiado.',
     h1: 'Documentos de LGPD para clínicas',
     intro:
-      'Precisa só de um documento? Faço sob medida, a partir de como a sua clínica realmente funciona. Documento genérico baixado da internet não protege a clínica e costuma contradizer a prática.',
+      'Precisa só de um documento? Fazemos sob medida, a partir de como a sua clínica realmente funciona. Documento genérico baixado da internet não protege a clínica e costuma contradizer a prática.',
     servicoSchema: 'Elaboração de documentos de LGPD',
     secoes: [
       {
-        titulo: 'Documentos que posso preparar',
+        titulo: 'Documentos que podemos preparar',
         lista: [
           'Política de privacidade e aviso de privacidade para pacientes',
           'Política de segurança da informação, inclusive em versão simplificada',

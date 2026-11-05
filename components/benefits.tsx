@@ -29,7 +29,7 @@ const benefits = [
         Cada obrigação tem <span style={highlight}>uma data</span>.
       </>
     ),
-    body: 'Pedido de paciente, comunicação de incidente, revisão de documentos: cada um tem prazo em lei ou em resolução da ANPD. Eu acompanho todos, sem correria de última hora.',
+    body: 'Pedido de paciente, comunicação de incidente, revisão de documentos: cada um tem prazo em lei ou em resolução da ANPD. Acompanhamos todos, sem correria de última hora.',
   },
   {
     kicker: 'fiscalizacao',

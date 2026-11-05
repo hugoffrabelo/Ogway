@@ -27,7 +27,7 @@ fora do código ou do domínio próprio. Ordem = impacto esperado.
 - [ ] **Perfil da Empresa no Google** (antigo Google Meu Negócio): é o maior
       fator para aparecer no mapa e no "pacote local" de buscas como
       "DPO Porto Alegre". Configurar como empresa de **área de atendimento**
-      (Porto Alegre e região), sem endereço público; categoria principal
+      (Porto Alegre e região), sem endereço público — o atendimento é online; categoria principal
       próxima de "Consultor"; cadastrar os 4 serviços com os mesmos nomes do
       site; link para o site; fotos.
 - [ ] **Avaliações**: pedir a cada cliente atendido uma avaliação no Perfil
@@ -104,7 +104,5 @@ pergunta logo no primeiro parágrafo, com frases curtas e dados verificáveis
 
 ## 7. Confirmar no texto
 
-- [ ] Atendimento presencial em Porto Alegre e região
-      (`lib/paginas-servico.ts`, constante `ATENDIMENTO`).
 - [ ] Prazo de retenção de 12 meses no aviso de privacidade
       (`app/privacidade/page.tsx`).

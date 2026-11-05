@@ -23,7 +23,7 @@ export const PERGUNTAS = [
   },
   {
     p: 'Vou precisar mostrar prontuários?',
-    r: 'Não. O mapeamento é feito a partir da descrição dos processos: quem coleta, onde guarda, com quem compartilha. Quando for preciso ver um sistema, olhamos juntos, na clínica, sem copiar nada. Tudo sob contrato com cláusula de confidencialidade.',
+    r: 'Não. O mapeamento é feito a partir da descrição dos processos: quem coleta, onde guarda, com quem compartilha. Quando for preciso ver um sistema, olhamos juntos, por videochamada, sem copiar nada. Tudo sob contrato com cláusula de confidencialidade.',
   },
   {
     p: 'E se acontecer um vazamento?',

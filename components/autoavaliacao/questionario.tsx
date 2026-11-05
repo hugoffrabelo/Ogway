@@ -320,7 +320,7 @@ function Resultado({
           {resultado.naoSei > 0
             ? `Em ${resultado.naoSei} ${resultado.naoSei === 1 ? 'pergunta' : 'perguntas'} a resposta foi "não sei", o que já é um sinal a investigar. `
             : ''}
-          No diagnóstico eu analiso cada ponto com você, priorizo pelo risco e entrego o plano de ação.
+          No diagnóstico analisamos cada ponto com você, priorizamos pelo risco e entregamos o plano de ação.
         </p>
       </div>
 
@@ -331,7 +331,7 @@ function Resultado({
         <p role="status" className="mt-4 max-w-[60ch] text-lg leading-relaxed text-foreground">
           {viaMailto
             ? 'Abrimos o seu e-mail com o resultado pronto. É só enviar por lá.'
-            : 'Recebi seu resultado. Respondo em até dois dias úteis para combinarmos a conversa.'}
+            : 'Recebemos seu resultado. Respondemos em até dois dias úteis para combinar a conversa.'}
         </p>
       ) : (
         <form onSubmit={enviar} className="relative mt-6 grid max-w-2xl gap-5 sm:grid-cols-2" aria-labelledby="pedir-diagnostico">

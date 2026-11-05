@@ -5,8 +5,9 @@
       nome do serviço, uma linha do que é, para quem, e o link para a página
       do serviço. Trocar o layout repetido (texto à esquerda + card de lista
       à direita, 3x) e rever a faixa navy de documentos avulsos.
-- [ ] Confirmar textos: atendimento presencial em Porto Alegre
-      (`lib/paginas-servico.ts`), retenção de 12 meses
-      (`app/privacidade/page.tsx`), "respondo em até dois dias úteis"
+- [x] Atendimento presencial removido (05/11): só online. Textos da Ogway
+      passados para a 1ª pessoa do plural.
+- [ ] Confirmar textos: retenção de 12 meses
+      (`app/privacidade/page.tsx`), "respondemos em até dois dias úteis"
       (`components/contact.tsx` e `components/autoavaliacao/questionario.tsx`).
 - [ ] Configurar `CONTACT_EMAIL` ou `CONTACT_ENDPOINT` (Actions → Variables).

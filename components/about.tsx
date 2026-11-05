@@ -51,19 +51,19 @@ export function About() {
           </div>
 
           <p className="mt-8 max-w-[62ch] text-lg leading-relaxed text-foreground">
-            Sou especialista em proteção de dados, com trabalho consistente
+            Hugo é especialista em proteção de dados, com trabalho consistente
             em GRC e segurança da informação no setor financeiro. A saúde
-            entrou na minha trajetória por um caminho mais pessoal: cresci
-            vendo meu pai administrar uma clínica, e cheguei a cursar alguns
-            anos de graduação na área da saúde antes de migrar para dados.
-            Esse é o encontro que sustenta a Ogway. Rigor técnico de quem vem
-            do compliance financeiro, aplicado a um setor que conheço de
+            entrou na trajetória de Hugo por um caminho mais pessoal: cresceu
+            vendo o pai administrar uma clínica e chegou a cursar alguns anos
+            de graduação na área da saúde antes de migrar para dados. Esse é
+            o encontro que sustenta a Ogway: rigor técnico de quem vem do
+            compliance financeiro, aplicado a um setor que conhecemos de
             dentro.
           </p>
           <p className="mt-6 max-w-[62ch] text-lg leading-relaxed text-foreground">
-            Acompanho pessoalmente cada clínica sob minha responsabilidade:
+            Acompanhamos pessoalmente cada clínica sob nossa responsabilidade:
             sem central de atendimento, sem revezamento de analista. Quando
-            você precisa de algo, fala comigo.
+            você precisa de algo, fala com quem já conhece a sua clínica.
           </p>
         </div>
       </div>
