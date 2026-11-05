@@ -47,10 +47,10 @@ export function Hero() {
               escurecido para o contraste de texto grande (4:1) */}
           <span className="text-[var(--lovisa-camel-ink)] lg:text-[var(--lovisa-camel)]">cuida</span>{' '}
           das pessoas.
-          {/* segunda linha em caligrafia, no mesmo tamanho do título */}
+          {/* segunda linha em Cormorant itálico, ~2/3 do tamanho do título */}
           <span
-            className="mt-2 block leading-[1.15] tracking-normal normal-case lg:mt-3"
-            style={{ fontFamily: 'var(--font-script)', fontWeight: 400 }}
+            className="mt-3 block text-[1.75rem] leading-[1.25] tracking-normal normal-case sm:text-[2.5rem] lg:mt-4 lg:text-5xl"
+            style={{ fontFamily: 'var(--font-script)', fontWeight: 500, fontStyle: 'italic' }}
           >
             Nós cuidamos da confiança delas.
           </span>

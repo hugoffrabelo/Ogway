@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Cinzel, Fraunces, Instrument_Sans, Pinyon_Script, Poppins } from 'next/font/google'
+import { Cinzel, Cormorant_Garamond, Fraunces, Instrument_Sans, Poppins } from 'next/font/google'
 import './globals.css'
 import { SITE_URL, url } from '@/lib/seo'
 
@@ -29,11 +29,14 @@ const cinzel = Cinzel({
   display: 'swap',
 })
 
-// Caligrafia de pena para a segunda linha do título do hero ("Nós cuidamos
-// da confiança delas."). Só um peso; latin-ext cobre ç, ã e acentos.
-const pinyon = Pinyon_Script({
+// Itálico da segunda linha do título do hero ("Nós cuidamos da confiança
+// delas."). Cormorant Garamond itálico, escolhida pelo Hugo entre seis
+// opções (as caligrafias Pinyon/Parisienne/Allura ficaram difíceis de ler).
+// Só o itálico 500; latin-ext cobre ç, ã e acentos.
+const caligrafia = Cormorant_Garamond({
   subsets: ['latin', 'latin-ext'],
-  weight: '400',
+  weight: '500',
+  style: 'italic',
   variable: '--font-script',
   display: 'swap',
 })
@@ -83,7 +86,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${fraunces.variable} ${instrument.variable} ${cinzel.variable} ${pinyon.variable} ${poppins.variable} bg-background`}
+      className={`${fraunces.variable} ${instrument.variable} ${cinzel.variable} ${caligrafia.variable} ${poppins.variable} bg-background`}
     >
       <body className="antialiased">
         {children}
