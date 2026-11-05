@@ -1,11 +1,15 @@
-import { ShellMark, ShellPattern } from '@/components/shell-pattern'
+import Link from 'next/link'
+import { ShellMark } from '@/components/shell-pattern'
+import { MobileMenu } from '@/components/mobile-menu'
 
+// Links com "/#âncora" via next/link: funcionam na home e também em
+// /privacidade, e o basePath do GitHub Pages (/Ogway) é aplicado sozinho.
 const nav = [
-  { label: 'O serviço', href: '#o-servico' },
-  { label: 'Como funciona', href: '#como-funciona' },
-  { label: 'Por que a Ogway', href: '#diferenca' },
-  { label: 'Pilares', href: '#pilares' },
-  { label: 'Quem cuida', href: '#quem-cuida' },
+  { label: 'Serviços', href: '/#servicos' },
+  { label: 'Autoavaliação', href: '/#autodiagnostico' },
+  { label: 'Por que a Ogway', href: '/#diferenca' },
+  { label: 'Quem cuida', href: '/#quem-cuida' },
+  { label: 'Dúvidas', href: '/#duvidas' },
 ]
 
 // Cinzel/Poppins — mesma referência do Lovisa Malin usada em Pillars, ver
@@ -17,17 +21,15 @@ const poppins = { fontFamily: 'var(--font-poppins)' }
 const NAVY = 'var(--lovisa-navy)'
 const CAMEL = 'var(--lovisa-camel)'
 
+const ctaClass =
+  'inline-flex h-10 shrink-0 items-center rounded-full px-5 text-sm font-medium tracking-wide transition-[filter,transform] hover:brightness-105 active:translate-y-px focus-visible:ring-2 focus-visible:ring-[var(--lovisa-navy)] focus-visible:ring-offset-2 focus-visible:outline-none sm:px-6'
+
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 overflow-hidden border-b border-border/60 bg-background/85 backdrop-blur-md">
-      <ShellPattern
-        className="absolute inset-0 h-full w-full text-primary"
-        opacity={0.05}
-        size={22}
-      />
-      <div className="relative mx-auto flex h-16 max-w-6xl items-center justify-between px-6 lg:px-8">
-        <a
-          href="#topo"
+    <header className="sticky top-0 z-40 bg-background" style={poppins}>
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6 lg:px-8">
+        <Link
+          href="/#topo"
           className="flex items-center gap-3 text-primary"
           aria-label="Ogway — página inicial"
         >
@@ -35,31 +37,32 @@ export function SiteHeader() {
           <span
             className="text-2xl leading-none font-medium tracking-wide uppercase"
             style={{ ...cinzel, color: NAVY }}
+            translate="no"
           >
             Ogway
           </span>
-        </a>
+        </Link>
 
-        <nav className="hidden items-center gap-2 md:flex">
+        <nav aria-label="Seções" className="hidden items-center gap-8 lg:flex">
           {nav.map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
-              className="glass-panel rounded-full px-4 py-2 text-xs font-light tracking-wider text-muted-foreground uppercase transition-colors hover:text-primary"
-              style={poppins}
+              className="text-[15px] text-foreground transition-colors hover:text-[var(--lovisa-camel)]"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
-        <a
-          href="#contato"
-          className="inline-flex h-10 shrink-0 items-center rounded-full px-6 text-sm font-medium tracking-wide shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_22px_-8px_rgba(189,160,120,0.7)] active:translate-y-0"
-          style={{ ...poppins, backgroundColor: CAMEL, color: NAVY }}
-        >
-          Agende uma conversa
-        </a>
+        <div className="flex items-center gap-2">
+          <Link href="/#contato" className={ctaClass} style={{ backgroundColor: CAMEL, color: NAVY }}>
+            <span className="sm:hidden">Conversar</span>
+            <span className="hidden sm:inline">Agende uma conversa</span>
+          </Link>
+
+          <MobileMenu items={nav} />
+        </div>
       </div>
     </header>
   )

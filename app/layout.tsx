@@ -1,7 +1,8 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Cinzel, Fraunces, Instrument_Sans, Poppins } from 'next/font/google'
+import { Cinzel, Cormorant_Garamond, Fraunces, Instrument_Sans, Poppins } from 'next/font/google'
 import './globals.css'
+import { SITE_URL, url } from '@/lib/seo'
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -28,6 +29,18 @@ const cinzel = Cinzel({
   display: 'swap',
 })
 
+// Itálico da segunda linha do título do hero ("Nós cuidamos da confiança
+// delas."). Cormorant Garamond itálico, escolhida pelo Hugo entre seis
+// opções (as caligrafias Pinyon/Parisienne/Allura ficaram difíceis de ler).
+// Só o itálico 500; latin-ext cobre ç, ã e acentos.
+const caligrafia = Cormorant_Garamond({
+  subsets: ['latin', 'latin-ext'],
+  weight: '500',
+  style: 'italic',
+  variable: '--font-script',
+  display: 'swap',
+})
+
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['300', '500'],
@@ -36,10 +49,28 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: 'Ogway — Encarregado de proteção de dados para clínicas',
+  metadataBase: new URL(`${SITE_URL}/`),
+  title: {
+    default: 'DPO e LGPD para clínicas em Porto Alegre | Ogway',
+    template: '%s',
+  },
   description:
-    'DPO como serviço para clínicas e consultórios de saúde. Proteção de dados tratada como confiança e tranquilidade, com o cuidado de um consultor sênior dedicado.',
-  generator: 'v0.app',
+    'Encarregado de dados (DPO), adequação à LGPD e consultoria para clínicas e consultórios em Porto Alegre: políticas, mapeamento de dados, contratos, sites e sistemas.',
+  applicationName: 'Ogway',
+  authors: [{ name: 'Hugo França' }],
+  alternates: { canonical: url('/') },
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    siteName: 'Ogway',
+    url: url('/'),
+    title: 'DPO e LGPD para clínicas em Porto Alegre | Ogway',
+    description:
+      'Encarregado de dados, adequação à LGPD e consultoria para clínicas. Faça a autoavaliação gratuita em cinco minutos.',
+    images: [{ url: url('/og.png'), width: 1200, height: 630, alt: 'Ogway — LGPD para clínicas' }],
+  },
+  twitter: { card: 'summary_large_image' },
+  robots: { index: true, follow: true },
 }
 
 export const viewport: Viewport = {
@@ -55,7 +86,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${fraunces.variable} ${instrument.variable} ${cinzel.variable} ${poppins.variable} bg-background`}
+      className={`${fraunces.variable} ${instrument.variable} ${cinzel.variable} ${caligrafia.variable} ${poppins.variable} bg-background`}
     >
       <body className="antialiased">
         {children}

@@ -23,26 +23,31 @@ export function ShellPattern({
   height = 800,
   opacity = 1,
 }: ShellPatternProps) {
-  const hexes: string[] = []
-
-  // flat-top honeycomb
-  const horiz = 1.5 * size
+  // Colmeia flat-top desenhada como <pattern>: um ladrilho de 3·size por
+  // √3·size com 5 hexágonos (4 cantos + centro) que o navegador repete.
+  // Antes eram centenas de <polygon> por seção (2.568 na home), duplicados
+  // no payload de hidratação do Next — ~600 KB de HTML só de decoração.
   const vert = Math.sqrt(3) * size
-
-  for (let col = 0; col * horiz < width + size * 2; col++) {
-    for (let row = 0; row * vert < height + size * 2; row++) {
-      const cx = col * horiz
-      const cy = row * vert + (col % 2 === 0 ? 0 : vert / 2)
-      const pts: string[] = []
-      for (let i = 0; i < 6; i++) {
-        const angle = (Math.PI / 180) * (60 * i)
-        const px = cx + size * Math.cos(angle)
-        const py = cy + size * Math.sin(angle)
-        pts.push(`${px.toFixed(2)},${py.toFixed(2)}`)
-      }
-      hexes.push(pts.join(' '))
-    }
-  }
+  const tileW = 3 * size
+  const hex = (cx: number, cy: number) =>
+    Array.from({ length: 6 }, (_, i) => {
+      const a = (Math.PI / 3) * i
+      return `${(cx + size * Math.cos(a)).toFixed(2)},${(cy + size * Math.sin(a)).toFixed(2)}`
+    }).join(' ')
+  const centros: [number, number][] = [
+    [0, 0],
+    [tileW, 0],
+    [0, vert],
+    [tileW, vert],
+    [1.5 * size, vert / 2],
+  ]
+  // id determinístico (funciona em Server Component, sem useId): inclui a
+  // classe porque a cor vem de currentColor — Pilares (branco) e Quem cuida
+  // (navy) usam o mesmo size e não podem compartilhar o <pattern>.
+  const chave = `${size}|${stroke}|${className ?? ''}`
+  let h = 0
+  for (let i = 0; i < chave.length; i++) h = (h * 31 + chave.charCodeAt(i)) >>> 0
+  const id = `shell-${size}-${h.toString(36)}`
 
   return (
     <svg
@@ -55,11 +60,16 @@ export function ShellPattern({
       fill="none"
       style={{ opacity }}
     >
-      <g stroke={stroke} strokeWidth={1}>
-        {hexes.map((points, i) => (
-          <polygon key={i} points={points} />
-        ))}
-      </g>
+      <defs>
+        <pattern id={id} width={tileW} height={vert.toFixed(2)} patternUnits="userSpaceOnUse">
+          <g stroke={stroke} strokeWidth={1}>
+            {centros.map(([x, y]) => (
+              <polygon key={`${x}-${y}`} points={hex(x, y)} />
+            ))}
+          </g>
+        </pattern>
+      </defs>
+      <rect width={width} height={height} fill={`url(#${id})`} />
     </svg>
   )
 }

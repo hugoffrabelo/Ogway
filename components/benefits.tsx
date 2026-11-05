@@ -1,4 +1,5 @@
 import { BASE_PATH } from '@/lib/base-path'
+import { Reveal } from '@/components/reveal'
 
 // Referência Lovisa Malin — CAMEL/NAVY vêm de --lovisa-camel/--lovisa-navy
 // (app/tokens.css), não dos tokens --accent/--primary. Ver
@@ -8,37 +9,37 @@ const NAVY = 'var(--lovisa-navy)'
 const headingFont = { fontFamily: 'var(--font-cinzel)' }
 const bodyFont = { fontFamily: 'var(--font-poppins)' }
 
-const highlight = { color: CAMEL }
+const highlight = { color: 'var(--lovisa-camel-ink)' }
 
 const benefits = [
   {
-    kicker: 'Obrigação legal, resolvida',
+    kicker: 'vale-para-todas',
     title: (
       <>
-        A <span style={highlight}>LGPD</span> exige um{' '}
-        <span style={highlight}>encarregado</span>.
+        A <span style={highlight}>LGPD</span> vale para toda{' '}
+        <span style={highlight}>clínica</span>.
       </>
     ),
-    body: 'Nomeação formal, registrada e visível — o requisito que toda clínica de saúde precisa cumprir desde 2020, sem mais pendência em aberto.',
+    body: 'Dado de saúde é dado sensível, e tratá-lo é atividade de alto risco. Por isso a dispensa de encarregado para empresas pequenas não socorre a clínica: ela precisa de encarregado, base legal, canal com o paciente e segurança.',
   },
   {
-    kicker: 'Prazos da lei, sob controle',
+    kicker: 'prazos',
     title: (
       <>
         Cada obrigação tem <span style={highlight}>uma data</span>.
       </>
     ),
-    body: 'Resposta a pacientes, atualização de documentos, registro de incidentes — tudo dentro do prazo que a LGPD determina, sem correria de última hora.',
+    body: 'Pedido de paciente, comunicação de incidente, revisão de documentos: cada um tem prazo em lei ou em resolução da ANPD. Acompanhamos todos, sem correria de última hora.',
   },
   {
-    kicker: 'Documentação que resiste a uma fiscalização',
+    kicker: 'fiscalizacao',
     title: (
       <>
         Se a <span style={highlight}>ANPD</span> pedir, a clínica tem o que{' '}
         <span style={highlight}>mostrar</span>.
       </>
     ),
-    body: 'Registro de tratamento, políticas, aviso de privacidade — organizados e prontos, não numa pasta improvisada na hora do pedido.',
+    body: 'Registro das operações, políticas, aviso de privacidade e relatórios de impacto organizados e prontos, não numa pasta improvisada na hora do pedido.',
   },
 ]
 
@@ -50,17 +51,15 @@ export function Benefits() {
       aria-labelledby="benefits-title"
       style={bodyFont}
     >
-      {/* forma_fundo2.jpg num recorte trapezoidal da borda direita até a
-          metade da página — o card à direita continua legível porque
-          glass-panel já tem seu próprio fundo translúcido, independente
-          do que está atrás. É decoração atrás do conteúdo, que continua
-          exatamente onde estava. */}
+      {/* forma_fundo2.webp num recorte trapezoidal da borda direita até a
+          metade da página — os cards continuam legíveis porque têm fundo
+          sólido (bg-card) por cima da imagem. */}
       <div
         aria-hidden="true"
         className="absolute inset-0"
         style={{
           clipPath: 'polygon(50% 0, 100% 0, 100% 100%, 58% 100%)',
-          backgroundImage: `url(${BASE_PATH}/forma_fundo2.jpg)`,
+          backgroundImage: `url(${BASE_PATH}/forma_fundo2.webp)`,
           // 'auto' = tamanho nativo da imagem (1248x832), sem esticar —
           // nunca fica maior que os pixels originais, então não pixela.
           backgroundSize: 'auto',
@@ -73,47 +72,36 @@ export function Benefits() {
       />
 
       <div className="relative mx-auto max-w-6xl px-6 lg:px-8">
-        <div className="max-w-2xl">
-          <p className="mb-5 flex items-center gap-3 text-sm font-light tracking-[0.2em] text-muted-foreground uppercase">
-            <span className="h-px w-8" style={{ backgroundColor: CAMEL }} />
-            O que muda
-          </p>
+        <Reveal className="max-w-2xl">
           <h2
             id="benefits-title"
             className="text-3xl leading-tight font-medium tracking-wide text-balance uppercase sm:text-4xl lg:text-5xl"
             style={{ ...headingFont, color: NAVY }}
           >
-            O que muda com um{' '}
-            <span style={{ color: CAMEL }}>encarregado dedicado</span> ao seu
-            lado?
+            O que muda na sua <span style={highlight}>clínica</span>
           </h2>
-        </div>
+          <p className="mt-6 max-w-[52ch] text-lg leading-relaxed text-foreground">
+            Com um encarregado dedicado ao seu lado, a LGPD deixa de ser uma
+            pendência e vira rotina.
+          </p>
+        </Reveal>
 
         <div className="mt-16 grid gap-5 md:grid-cols-3">
-          {benefits.map((item) => (
-            <article
+          {benefits.map((item, i) => (
+            <Reveal
+              as="article"
               key={item.kicker}
-              className="glass-panel flex flex-col rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-1 lg:p-10"
-              style={{
-                backgroundColor: 'color-mix(in srgb, var(--card) 85%, transparent)',
-              }}
+              delay={i * 90}
+              className="flex flex-col rounded-2xl bg-card p-8 lg:p-10"
             >
-              <span
-                className="text-sm font-medium tracking-wide"
-                style={{ color: CAMEL }}
-              >
-                {item.kicker}
-              </span>
               <h3
-                className="mt-4 text-2xl leading-snug font-medium tracking-wide uppercase"
+                className="text-xl leading-snug font-medium tracking-wide uppercase sm:text-2xl"
                 style={{ ...headingFont, color: NAVY }}
               >
                 {item.title}
               </h3>
-              <p className="mt-4 font-light leading-relaxed text-muted-foreground">
-                {item.body}
-              </p>
-            </article>
+              <p className="mt-4 leading-relaxed text-foreground">{item.body}</p>
+            </Reveal>
           ))}
         </div>
       </div>

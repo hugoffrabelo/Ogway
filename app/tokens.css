@@ -68,6 +68,11 @@
   --lovisa-navy: #043c53;
   --lovisa-camel: #bda078;
   --lovisa-camel-light: #e3c99c;
+  /* camelo escurecido para texto sobre fundo claro: 4:1 no creme (o camelo
+     puro dá 2:1 e falha até para título grande) */
+  --lovisa-camel-ink: #8a6d45;
+  /* versão para texto pequeno (até ~18px): 4,7:1 no creme, 5,1:1 no card */
+  --lovisa-camel-text: #7d6240;
 }
 
 .dark {
@@ -113,4 +118,9 @@
   --lovisa-navy: #043c53;
   --lovisa-camel: #bda078;
   --lovisa-camel-light: #e3c99c;
+  /* camelo escurecido para texto sobre fundo claro: 4:1 no creme (o camelo
+     puro dá 2:1 e falha até para título grande) */
+  --lovisa-camel-ink: #8a6d45;
+  /* versão para texto pequeno (até ~18px): 4,7:1 no creme, 5,1:1 no card */
+  --lovisa-camel-text: #7d6240;
 }
