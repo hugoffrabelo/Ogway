@@ -376,7 +376,11 @@ export function Shell3D({ className }: { className?: string }) {
     <div className={className} aria-hidden="true">
       <Canvas
         dpr={[1, 2]}
-        camera={{ position: [0, 0.6, 4.4], fov: 40 }}
+        // fov 48 (era 40) abre espaço abaixo do objeto para a ContactShadows
+        // se desfazer antes da borda do canvas (antes ela era cortada numa
+        // linha reta). O canvas no hero cresceu na mesma proporção
+        // (32rem → 39rem), então o objeto mantém o mesmo tamanho na tela.
+        camera={{ position: [0, 0.6, 4.4], fov: 48 }}
         gl={{ antialias: true, alpha: true }}
       >
         <Scene reduced={reduced} scroll={scroll} />
