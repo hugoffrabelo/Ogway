@@ -21,11 +21,13 @@ const btnPrimario =
 const btnSecundario =
   'inline-flex h-12 items-center justify-center rounded-full px-6 text-base font-medium text-foreground transition-colors hover:bg-secondary focus-visible:ring-2 focus-visible:ring-[var(--lovisa-navy)] focus-visible:outline-none'
 
-type Fase = { tipo: 'intro' } | { tipo: 'area'; i: number } | { tipo: 'resultado' }
+// Começa direto na primeira área: a explicação (20 perguntas, 6 áreas,
+// respostas só no navegador) fica na abertura da página /autoavaliacao.
+type Fase = { tipo: 'area'; i: number } | { tipo: 'resultado' }
 type Envio = 'idle' | 'sending' | 'sent' | 'error'
 
 export function Questionario() {
-  const [fase, setFase] = useState<Fase>({ tipo: 'intro' })
+  const [fase, setFase] = useState<Fase>({ tipo: 'area', i: 0 })
   const [respostas, setRespostas] = useState<Respostas>({})
   const topo = useRef<HTMLDivElement>(null)
 
@@ -43,7 +45,6 @@ export function Questionario() {
 
   return (
     <div ref={topo} tabIndex={-1} className="scroll-mt-24 outline-none">
-      {fase.tipo === 'intro' && <Intro onComecar={() => irPara({ tipo: 'area', i: 0 })} />}
 
       {fase.tipo === 'area' && (
         <EtapaArea
@@ -51,7 +52,7 @@ export function Questionario() {
           respostas={respostas}
           respondidas={respondidas}
           onResponder={(id, r) => setRespostas((prev) => ({ ...prev, [id]: r }))}
-          onVoltar={() => irPara(fase.i === 0 ? { tipo: 'intro' } : { tipo: 'area', i: fase.i - 1 })}
+          onVoltar={fase.i === 0 ? undefined : () => irPara({ tipo: 'area', i: fase.i - 1 })}
           onAvancar={() =>
             irPara(fase.i === AREAS.length - 1 ? { tipo: 'resultado' } : { tipo: 'area', i: fase.i + 1 })
           }
@@ -64,39 +65,10 @@ export function Questionario() {
           respostas={respostas}
           onRefazer={() => {
             setRespostas({})
-            irPara({ tipo: 'intro' })
+            irPara({ tipo: 'area', i: 0 })
           }}
         />
       )}
-    </div>
-  )
-}
-
-function Intro({ onComecar }: { onComecar: () => void }) {
-  return (
-    <div>
-      <p className="max-w-[60ch] text-lg leading-relaxed text-foreground">
-        São {TOTAL_PERGUNTAS} perguntas em {AREAS.length} áreas, em linguagem do dia a dia da
-        clínica. Leva uns cinco minutos. No fim você vê o nível de maturidade da clínica e a nota de
-        cada área.
-      </p>
-      <ul className="mt-8 flex flex-col gap-3 text-foreground">
-        {AREAS.map((a) => (
-          <li key={a.id} className="flex gap-3 leading-relaxed">
-            <span aria-hidden="true" className="mt-[0.6em] h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: CAMEL }} />
-            <span>
-              <strong className="font-medium">{a.nome}.</strong> {a.descricao}
-            </span>
-          </li>
-        ))}
-      </ul>
-      <p className="mt-8 max-w-[60ch] leading-relaxed text-foreground/80">
-        Suas respostas ficam só no seu navegador. Nada é enviado, a menos que você peça o
-        diagnóstico no final.
-      </p>
-      <button type="button" onClick={onComecar} className={`${btnPrimario} mt-10`} style={{ backgroundColor: CAMEL, color: NAVY }}>
-        Começar a autoavaliação
-      </button>
     </div>
   )
 }
@@ -113,7 +85,7 @@ function EtapaArea({
   respostas: Respostas
   respondidas: number
   onResponder: (id: string, r: Resposta) => void
-  onVoltar: () => void
+  onVoltar?: () => void
   onAvancar: () => void
 }) {
   const area = AREAS[i]
@@ -161,7 +133,7 @@ function EtapaArea({
                   <label
                     key={o.valor}
                     className={`flex h-12 cursor-pointer items-center justify-center rounded-full px-4 text-base transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-[var(--lovisa-navy)] has-[:focus-visible]:ring-offset-2 ${
-                      marcado ? 'font-medium text-white' : 'bg-card text-foreground hover:bg-secondary'
+                      marcado ? 'font-medium text-white' : 'bg-background text-foreground hover:bg-secondary'
                     }`}
                     style={marcado ? { backgroundColor: NAVY } : undefined}
                   >
@@ -183,9 +155,13 @@ function EtapaArea({
       </div>
 
       <div className="mt-12 flex flex-wrap items-center justify-between gap-4">
-        <button type="button" onClick={onVoltar} className={btnSecundario}>
-          Voltar
-        </button>
+        {onVoltar ? (
+          <button type="button" onClick={onVoltar} className={btnSecundario}>
+            Voltar
+          </button>
+        ) : (
+          <span />
+        )}
         <div className="flex flex-col items-end gap-2">
           <button
             type="button"

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { CONTACT_EMAIL } from '@/lib/contact'
+import { PaginaAbertura } from '@/components/pagina-abertura'
 
 export const metadata: Metadata = {
   alternates: { canonical: url('/privacidade') },
@@ -22,14 +23,14 @@ const ATUALIZADO_EM = '4 de novembro de 2026'
 
 function Secao({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
-    <section className="mt-12">
+    <section className="grid gap-4 lg:grid-cols-[1fr_2fr] lg:gap-16">
       <h2
-        className="text-xl font-medium tracking-wide uppercase sm:text-2xl"
+        className="text-xl leading-snug font-medium tracking-wide text-balance uppercase sm:text-2xl"
         style={{ ...headingFont, color: NAVY }}
       >
         {titulo}
       </h2>
-      <div className="mt-4 flex flex-col gap-4 leading-relaxed text-foreground">{children}</div>
+      <div className="flex max-w-[66ch] flex-col gap-4 text-lg leading-relaxed text-foreground">{children}</div>
     </section>
   )
 }
@@ -38,14 +39,16 @@ export default function PrivacidadePage() {
   return (
     <div className="min-h-svh bg-background">
       <SiteHeader />
-      <main className="mx-auto max-w-[68ch] px-6 py-20 lg:py-28" style={bodyFont}>
-        <h1
-          className="text-3xl leading-tight font-medium tracking-wide uppercase sm:text-4xl"
-          style={{ ...headingFont, color: NAVY }}
-        >
-          Aviso de privacidade
-        </h1>
-        <p className="mt-4 text-foreground/80">Atualizado em {ATUALIZADO_EM}.</p>
+      <main style={bodyFont}>
+        <PaginaAbertura titulo="Aviso de privacidade" caminho={[{ nome: 'Início', href: '/' }]}>
+          <p className="mt-8 max-w-[52ch] text-lg leading-relaxed text-white/90 sm:text-xl">
+            Como tratamos os dados que você envia por este site: o que coletamos, para quê, por
+            quanto tempo e como exercer os seus direitos.
+          </p>
+          <p className="mt-4 text-white/80">Atualizado em {ATUALIZADO_EM}.</p>
+        </PaginaAbertura>
+
+        <div className="mx-auto flex max-w-6xl flex-col gap-14 px-6 py-20 lg:gap-20 lg:px-8 lg:py-28">
 
         <Secao titulo="Quem trata os seus dados">
           <p>
@@ -113,7 +116,7 @@ export default function PrivacidadePage() {
           </p>
         </Secao>
 
-        <p className="mt-16">
+        <p>
           <Link
             href="/"
             className="font-medium underline underline-offset-4 transition-colors hover:text-[var(--lovisa-camel)]"
@@ -121,6 +124,7 @@ export default function PrivacidadePage() {
             Voltar para a página inicial
           </Link>
         </p>
+        </div>
       </main>
       <SiteFooter />
     </div>

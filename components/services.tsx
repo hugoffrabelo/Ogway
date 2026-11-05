@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Reveal } from '@/components/reveal'
-import { ShellPattern } from '@/components/shell-pattern'
+import { BlocoCaso, type Fundo } from '@/components/bloco-caso'
 
 // "Como posso ajudar" organizado pela situação do visitante, não pelo nome
 // do serviço: quem chega reconhece o próprio caso em uma frase e vai direto
@@ -16,12 +16,9 @@ import { ShellPattern } from '@/components/shell-pattern'
 // SERVICOS também alimenta o campo "O que você procura" do formulário de
 // contato (components/contact.tsx), por isso mantém id/nome/pagina.
 const NAVY = 'var(--lovisa-navy)'
-const CAMEL = 'var(--lovisa-camel)'
 const CAMEL_INK = 'var(--lovisa-camel-ink)'
 const headingFont = { fontFamily: 'var(--font-cinzel)' }
 const bodyFont = { fontFamily: 'var(--font-poppins)' }
-
-type Fundo = 'navy' | 'camelo'
 
 export const SERVICOS: {
   id: string
@@ -64,31 +61,6 @@ export const SERVICOS: {
     fundo: 'camelo',
   },
 ]
-
-// Contraste do texto sobre cada bloco: branco sobre navy ≥ 10:1; navy sobre
-// camelo 4,6:1 (texto grande, acima de 24px).
-function BlocoCaso({ fundo, children }: { fundo: Fundo; children: React.ReactNode }) {
-  return (
-    <div
-      className="relative isolate flex min-h-[10rem] items-end overflow-hidden rounded-2xl p-6 lg:min-h-[12rem] lg:p-8"
-      style={{ backgroundColor: fundo === 'camelo' ? CAMEL : NAVY, color: fundo === 'camelo' ? NAVY : 'white' }}
-    >
-      {/* camada de material: cresce levemente no hover da linha */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 transition-transform duration-700 ease-out group-hover:scale-[1.06] group-focus-visible:scale-[1.06]"
-      >
-        {fundo === 'navy' && (
-          <ShellPattern className="h-full w-full text-white" opacity={0.12} size={34} />
-        )}
-        {fundo === 'camelo' && (
-          <ShellPattern className="h-full w-full text-[var(--lovisa-navy)]" opacity={0.1} size={34} />
-        )}
-      </div>
-      {children}
-    </div>
-  )
-}
 
 export function Services() {
   return (
