@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Ogway — apresentação dos serviços (motion)</title>
+<!--
+  Fonte do vídeo public/video/apresentacao.mp4.
+
+  Animação 100% determinística: render(t) desenha o quadro do segundo t.
+  - Abrir no navegador: toca em tempo real (loop).
+  - ?t=12.5 congela no segundo 12,5 (para revisar um quadro).
+  - Gravação: motion/render.mjs chama render(t) quadro a quadro e envia os
+    PNGs ao ffmpeg. Ver motion/README.md.
+
+  Estética do site: navy #043c53, camelo #bda078 / #e3c99c, creme #f1e8d8,
+  Cinzel nos títulos e Poppins no texto; hexágonos como única forma; sem
+  gradientes, brilhos ou sombras.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&family=Poppins:wght@300;400;500;600&display=block" rel="stylesheet" />
+<style>
+  html, body { margin: 0; background: #043c53; overflow: hidden; }
+  svg { display: block; width: 100vw; height: 100vh; }
+  .cinzel { font-family: 'Cinzel', Georgia, serif; font-weight: 500; }
+  .pop { font-family: 'Poppins', Arial, sans-serif; }
+</style>
+</head>
+<body>
+<svg id="cena" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+const DUR = 24
+const NAVY = '#043c53', NAVY2 = '#0b4d69', CAMEL = '#bda078', CAMEL2 = '#e3c99c', CREAM = '#f1e8d8', WHITE = '#ffffff'
+const NS = 'http://www.w3.org/2000/svg'
+const svg = document.getElementById('cena')
+
+// ---------- utilidades ----------
+const clamp = (x) => Math.max(0, Math.min(1, x))
+const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2)
+const easeOut = (x) => 1 - Math.pow(1 - x, 3)
+const seg = (t, a, b, f = ease) => f(clamp((t - a) / (b - a)))
+const lerp = (a, b, k) => a + (b - a) * k
+// visibilidade de um trecho: entra entre a..a+fi, sai entre b-fo..b
+const janela = (t, a, b, fi = 0.6, fo = 0.6) => Math.min(seg(t, a, a + fi), 1 - seg(t, b - fo, b))
+const el = (tag, attrs = {}, pai = svg) => {
+  const e = document.createElementNS(NS, tag)
+  for (const k in attrs) e.setAttribute(k, attrs[k])
+  pai.appendChild(e)
+  return e
+}
+const set = (e, attrs) => { for (const k in attrs) e.setAttribute(k, attrs[k]) }
+// hexágono de ponta para cima (como o logo)
+const hexPts = (cx, cy, r) =>
+  Array.from({ length: 6 }, (_, i) => {
+    const a = (Math.PI / 3) * i - Math.PI / 2
+    return `${(cx + r * Math.cos(a)).toFixed(2)},${(cy + r * Math.sin(a)).toFixed(2)}`
+  }).join(' ')
+const PERIM = (r) => 6 * r
+
+// ---------- fundo: colmeia que deriva devagar ----------
+const defs = el('defs')
+const pat = el('pattern', { id: 'colmeia', width: 180, height: 103.92, patternUnits: 'userSpaceOnUse' }, defs)
+for (const [x, y] of [[0, 0], [180, 0], [0, 103.92], [180, 103.92], [90, 51.96]]) {
+  el('polygon', {
+    points: Array.from({ length: 6 }, (_, i) => {
+      const a = (Math.PI / 3) * i
+      return `${(x + 60 * Math.cos(a)).toFixed(2)},${(y + 60 * Math.sin(a)).toFixed(2)}`
+    }).join(' '),
+    fill: 'none', stroke: WHITE, 'stroke-width': 1.2,
+  }, pat)
+}
+el('rect', { width: 1920, height: 1080, fill: NAVY })
+const fundo = el('rect', { x: -200, y: -200, width: 2400, height: 1500, fill: 'url(#colmeia)', opacity: 0.06 })
+
+// ---------- cena 0: marca ----------
+const marca = el('g')
+const LOGO_R = 150
+const logoHex = el('polygon', { points: hexPts(0, 0, LOGO_R), fill: 'none', stroke: WHITE, 'stroke-width': 10, 'stroke-linejoin': 'round' }, marca)
+const cuboE = el('polygon', { points: '0,-70 -60.6,-35 -60.6,35 0,70', fill: CAMEL }, marca)
+const cuboD = el('polygon', { points: '0,-70 60.6,-35 60.6,35 0,70', fill: CAMEL2 }, marca)
+const wordmark = el('text', { x: 0, y: 290, 'text-anchor': 'middle', class: 'cinzel', 'font-size': 120, fill: WHITE, 'letter-spacing': 30 }, marca)
+wordmark.textContent = 'OGWAY'
+const slogan = el('text', { x: 0, y: 360, 'text-anchor': 'middle', class: 'pop', 'font-size': 34, fill: CREAM, 'font-weight': 300 }, marca)
+slogan.textContent = 'LGPD e encarregado de dados para clínicas'
+
+// marca pequena no canto, durante os produtos
+const canto = el('g')
+el('polygon', { points: hexPts(0, 0, 26), fill: 'none', stroke: WHITE, 'stroke-width': 3.5, 'stroke-linejoin': 'round' }, canto)
+el('polygon', { points: '0,-12 -10.4,-6 -10.4,6 0,12', fill: CAMEL }, canto)
+el('polygon', { points: '0,-12 10.4,-6 10.4,6 0,12', fill: CAMEL2 }, canto)
+const cantoTxt = el('text', { x: 46, y: 12, class: 'cinzel', 'font-size': 34, fill: WHITE, 'letter-spacing': 6 }, canto)
+cantoTxt.textContent = 'OGWAY'
+
+// ---------- títulos das cenas (coluna da esquerda) ----------
+const CENAS = [
+  { a: 4.2, b: 8.6, titulo: ['Adequação', 'completa'], sub: 'Do zero, em seis etapas.' },
+  { a: 8.6, b: 12.9, titulo: ['Encarregado', 'contínuo'], sub: 'Mantemos tudo em dia, mês a mês.' },
+  { a: 12.9, b: 17.1, titulo: ['Consultoria', 'pontual'], sub: 'Uma frente só, resolvida.' },
+  { a: 17.1, b: 21, titulo: ['Documentos', 'avulsos'], sub: 'Sob medida, nunca um modelo copiado.' },
+]
+const textosCena = CENAS.map((c) => {
+  const g = el('g')
+  const t1 = el('text', { x: 170, y: 470, class: 'cinzel', 'font-size': 92, fill: WHITE, 'letter-spacing': 3 }, g)
+  t1.textContent = c.titulo[0].toUpperCase()
+  const t2 = el('text', { x: 170, y: 575, class: 'cinzel', 'font-size': 92, fill: CAMEL, 'letter-spacing': 3 }, g)
+  t2.textContent = c.titulo[1].toUpperCase()
+  const s = el('text', { x: 172, y: 660, class: 'pop', 'font-size': 36, fill: CREAM, 'font-weight': 300 }, g)
+  s.textContent = c.sub
+  // marcador: losango camelo que cresce
+  const barra = el('rect', { x: 172, y: 336, width: 0, height: 6, rx: 3, fill: CAMEL }, g)
+  return { g, barra, c }
+})
+
+// ---------- cenas 1–3: colmeia ----------
+const CX = 1380, CY = 540, R = 118
+const W = Math.sqrt(3) * R * 1.08
+const VIZ = [
+  [CX - W / 2, CY - 1.5 * R * 1.08], [CX + W / 2, CY - 1.5 * R * 1.08], [CX + W, CY],
+  [CX + W / 2, CY + 1.5 * R * 1.08], [CX - W / 2, CY + 1.5 * R * 1.08], [CX - W, CY],
+]
+const colmeia = el('g')
+function criaHex(pai, id) {
+  const g = el('g', {}, pai)
+  const clip = el('clipPath', { id }, defs)
+  const clipPoly = el('polygon', {}, clip)
+  const enchimento = el('rect', { fill: CAMEL, 'clip-path': `url(#${id})` }, g)
+  const contorno = el('polygon', { fill: 'none', stroke: WHITE, 'stroke-width': 2.5, 'stroke-linejoin': 'round' }, g)
+  return {
+    g, desenha(cx, cy, r, nivel, opac, traco = 'rgba(255,255,255,0.55)', larg = 2.5, cor = CAMEL) {
+      const pts = hexPts(cx, cy, r)
+      set(clipPoly, { points: pts })
+      set(contorno, { points: pts, stroke: traco, 'stroke-width': larg })
+      const h = 2 * r * nivel
+      set(enchimento, { x: cx - r, y: cy + r - h, width: 2 * r, height: h, fill: cor })
+      set(g, { opacity: opac })
+    },
+  }
+}
+const hexes = VIZ.map((_, i) => criaHex(colmeia, 'h' + i))
+const centro = criaHex(colmeia, 'hc')
+
+// órbita do encarregado contínuo
+const orbita = el('g')
+const ORB_R = 300
+const aro = el('circle', { cx: CX, cy: CY, r: ORB_R, fill: 'none', stroke: 'rgba(255,255,255,0.18)', 'stroke-width': 2 }, orbita)
+const meses = Array.from({ length: 12 }, (_, i) => {
+  const a = (Math.PI * 2 * i) / 12 - Math.PI / 2
+  return { a, p: el('polygon', { points: hexPts(CX + ORB_R * Math.cos(a), CY + ORB_R * Math.sin(a), 18), fill: NAVY, stroke: 'rgba(255,255,255,0.5)', 'stroke-width': 2 }, orbita) }
+})
+const satelite = el('circle', { r: 13, fill: CAMEL }, orbita)
+
+// consultoria: três frentes
+const FRENTES = ['Site', 'Contratos', 'Sistemas']
+const FX = [CX - 270, CX, CX + 270]
+const frentes = FRENTES.map((nome, i) => {
+  const h = criaHex(colmeia, 'f' + i)
+  const rot = el('text', { 'text-anchor': 'middle', class: 'pop', 'font-size': 32, 'font-weight': 500, fill: WHITE })
+  rot.textContent = nome
+  return { h, rot }
+})
+const lente = el('polygon', { fill: 'none', stroke: CAMEL, 'stroke-width': 7, 'stroke-linejoin': 'round' })
+
+// ---------- cena 4: documentos ----------
+const DOCS = ['Política', 'ROPA', 'RIPD', 'Incidentes']
+const folhas = DOCS.map((nome, i) => {
+  const g = el('g')
+  el('rect', { x: -120, y: -180, width: 240, height: 360, rx: 22, fill: CREAM }, g)
+  el('polygon', { points: hexPts(-78, -122, 20), fill: i % 2 ? CAMEL : NAVY }, g)
+  const t = el('text', { x: -48, y: -112, class: 'pop', 'font-size': 25, 'font-weight': 600, fill: NAVY }, g)
+  t.textContent = nome
+  ;[[-56, 180], [-12, 150], [32, 186], [76, 128]].forEach(([y, w]) =>
+    el('rect', { x: -94, y, width: w, height: 14, rx: 7, fill: 'rgba(4,60,83,0.16)' }, g))
+  return g
+})
+
+// ---------- cena 5: fechamento ----------
+const fim = el('g')
+const FIM_R = 132
+const FW = Math.sqrt(3) * FIM_R * 1.06
+// losango de colmeia: um em cima, dois no meio, um embaixo
+const FV = 1.5 * FIM_R * 1.06
+const FIM_POS = [[1380, 540 - FV], [1380 - FW / 2, 540], [1380 + FW / 2, 540], [1380, 540 + FV]]
+const PRODUTOS = [['Adequação', NAVY2, WHITE], ['Encarregado', CAMEL, NAVY], ['Consultoria', CAMEL, NAVY], ['Documentos', NAVY2, WHITE]]
+const fimHex = PRODUTOS.map(([nome, cor, tinta]) => {
+  const g = el('g', {}, fim)
+  const p = el('polygon', { fill: cor, stroke: cor === NAVY2 ? 'rgba(255,255,255,0.6)' : cor, 'stroke-width': 2.5 }, g)
+  const t = el('text', { 'text-anchor': 'middle', class: 'pop', 'font-size': 28, 'font-weight': 500, fill: tinta }, g)
+  t.textContent = nome
+  return { g, p, t }
+})
+const fimT1 = el('text', { x: 170, y: 470, class: 'cinzel', 'font-size': 92, fill: WHITE, 'letter-spacing': 3 })
+fimT1.textContent = 'QUAL É O SEU'
+const fimT2 = el('text', { x: 170, y: 575, class: 'cinzel', 'font-size': 92, fill: CAMEL, 'letter-spacing': 3 })
+fimT2.textContent = 'CASO?'
+const fimSub = el('text', { x: 172, y: 660, class: 'pop', 'font-size': 34, fill: CREAM, 'font-weight': 300 })
+fimSub.textContent = 'LGPD para clínicas em Porto Alegre e todo o Brasil.'
+const fimCta = el('g')
+el('rect', { x: 170, y: 712, width: 470, height: 76, rx: 38, fill: CAMEL }, fimCta)
+const fimCtaT = el('text', { x: 405, y: 761, 'text-anchor': 'middle', class: 'pop', 'font-size': 30, 'font-weight': 500, fill: NAVY }, fimCta)
+fimCtaT.textContent = 'Agende uma conversa'
+
+// ---------- render(t) ----------
+function render(t) {
+  // fundo deriva devagar o tempo todo
+  set(fundo, { transform: `translate(${(-t * 6) % 180} ${(-t * 3.5) % 103.92})` })
+  const saida = 1 - seg(t, DUR - 0.5, DUR) // fade final para o loop
+
+  // ---- cena 0: marca (0–4.2) ----
+  const desenho = seg(t, 0.2, 1.8)
+  set(logoHex, { 'stroke-dasharray': PERIM(LOGO_R), 'stroke-dashoffset': PERIM(LOGO_R) * (1 - desenho) })
+  const cubo = seg(t, 1.3, 2.2, easeOut)
+  set(cuboE, { transform: `scale(${cubo})`, opacity: cubo })
+  set(cuboD, { transform: `scale(${cubo})`, opacity: cubo })
+  const wm = seg(t, 1.8, 2.8, easeOut)
+  set(wordmark, { opacity: wm, 'letter-spacing': lerp(60, 30, wm) })
+  set(slogan, { opacity: seg(t, 2.4, 3.2), transform: `translate(0 ${lerp(18, 0, seg(t, 2.4, 3.2, easeOut))})` })
+  // a marca encolhe e sai para cima enquanto entra a primeira cena
+  const sai0 = seg(t, 3.6, 4.5)
+  set(marca, {
+    transform: `translate(960 ${lerp(420, 300, sai0)}) scale(${lerp(1, 0.55, sai0)})`,
+    opacity: (1 - sai0) * (t < 0.05 ? 0 : 1),
+  })
+  set(canto, { transform: 'translate(150 120)', opacity: Math.min(seg(t, 4.2, 4.9), 1 - seg(t, 20.6, 21.2)) })
+
+  // ---- títulos ----
+  textosCena.forEach(({ g, barra, c }) => {
+    const v = janela(t, c.a, c.b, 0.7, 0.5)
+    const sobe = lerp(30, 0, seg(t, c.a, c.a + 0.8, easeOut))
+    set(g, { opacity: v, transform: `translate(0 ${sobe})` })
+    set(barra, { width: 90 * seg(t, c.a + 0.2, c.a + 1.1, easeOut) })
+  })
+
+  // ---- cena 1: colmeia se constrói (4.6–8.6) ----
+  const recolhe = seg(t, 8.6, 9.4) // cena 2 recolhe os vizinhos no centro
+  VIZ.forEach(([x, y], i) => {
+    const a = 4.7 + i * 0.42
+    const surge = seg(t, a, a + 0.5, easeOut)
+    const nivel = seg(t, a + 0.25, a + 1.0)
+    const px = lerp(x, CX, recolhe), py = lerp(y, CY, recolhe)
+    const r = R * lerp(0.7, 1, surge) * lerp(1, 0.4, recolhe)
+    hexes[i].desenha(px, py, r, nivel, surge * (1 - recolhe), 'rgba(255,255,255,0.55)', 2.5, i % 2 ? CAMEL2 : CAMEL)
+  })
+
+  // centro: aparece com a colmeia, vira o encarregado, depois se divide
+  const cSurge = seg(t, 7.2, 7.8, easeOut)
+  const cNivel = seg(t, 7.4, 8.2)
+  const divide = seg(t, 12.9, 13.6)
+  const pulso = 1 + 0.04 * Math.sin(Math.max(0, t - 9.4) * 4.2) * janela(t, 9.4, 12.9, 0.4, 0.4)
+  centro.desenha(CX, CY, R * lerp(0.7, 1, cSurge) * pulso * lerp(1, 0.6, divide), cNivel, cSurge * (1 - divide), WHITE, 3)
+
+  // ---- cena 2: órbita mês a mês (9.2–12.9) ----
+  const vOrb = janela(t, 9.1, 13.2, 0.6, 0.5)
+  set(orbita, { opacity: vOrb })
+  const giro = seg(t, 9.6, 12.6, (x) => x) // linear: um mês por vez
+  const ang = -Math.PI / 2 + giro * Math.PI * 2
+  set(satelite, { cx: CX + ORB_R * Math.cos(ang), cy: CY + ORB_R * Math.sin(ang) })
+  meses.forEach(({ p }, i) => {
+    const aceso = giro * 12 > i + 0.05
+    set(p, { fill: aceso ? CAMEL : NAVY, stroke: aceso ? CAMEL : 'rgba(255,255,255,0.5)' })
+  })
+
+  // ---- cena 3: três frentes + lente (13.2–17.1) ----
+  const vFr = janela(t, 13.2, 17.3, 0.7, 0.5)
+  const abre = seg(t, 13.2, 14.0)
+  const focoEm = t < 14.4 ? -1 : t < 15.3 ? 0 : t < 16.2 ? 1 : 2
+  frentes.forEach(({ h, rot }, i) => {
+    const x = lerp(CX, FX[i], abre)
+    const ativo = focoEm === i
+    const nivel = ativo ? seg(t, [14.4, 15.3, 16.2][i], [14.4, 15.3, 16.2][i] + 0.5) : focoEm > i ? 0.25 : 0
+    h.desenha(x, CY, 104 * lerp(0.6, 1, abre), nivel, vFr)
+    set(rot, { x, y: CY + 165, opacity: vFr * abre })
+  })
+  if (focoEm >= 0) {
+    const de = Math.max(0, focoEm - 1), ate = focoEm
+    const k = seg(t, [14.4, 15.3, 16.2][focoEm] - 0.35, [14.4, 15.3, 16.2][focoEm])
+    const lx = focoEm === 0 ? FX[0] : lerp(FX[de], FX[ate], k)
+    set(lente, { points: hexPts(lx, CY, 124), opacity: vFr * seg(t, 14.0, 14.4) })
+  } else set(lente, { opacity: 0 })
+
+  // ---- cena 4: documentos em leque (17.2–21) ----
+  const vDoc = janela(t, 17.2, 21.2, 0.3, 0.6)
+  folhas.forEach((g, i) => {
+    const a = 17.3 + i * 0.28
+    const k = seg(t, a, a + 0.8, easeOut)
+    const fecha = seg(t, 20.6, 21.2)
+    const alvoX = 1380 + (i - 1.5) * 196, alvoR = (i - 1.5) * 5
+    const x = lerp(2250, alvoX, k), r = lerp(14, alvoR, k)
+    const y = 560 + Math.abs(i - 1.5) * 22
+    set(g, {
+      transform: `translate(${lerp(x, 1380, fecha)} ${lerp(y, 560, fecha)}) rotate(${lerp(r, 0, fecha)}) scale(${lerp(1, 0.4, fecha)})`,
+      opacity: vDoc * k,
+    })
+  })
+
+  // ---- cena 5: quatro produtos em colmeia (21–24) ----
+  const vFim = seg(t, 20.9, 21.6)
+  fimHex.forEach(({ g, p, t: txt }, i) => {
+    const a = 21.0 + i * 0.18
+    const k = seg(t, a, a + 0.6, easeOut)
+    const [x, y] = FIM_POS[i]
+    const respira = 1 + 0.015 * Math.sin((t - 21) * 2.4 + i)
+    set(p, { points: hexPts(x, y, FIM_R * lerp(0.5, 1, k) * respira) })
+    set(txt, { x, y: y + 10, opacity: seg(t, a + 0.3, a + 0.8) })
+    set(g, { opacity: k })
+  })
+  const sobeFim = lerp(30, 0, seg(t, 21.2, 22.0, easeOut))
+  ;[fimT1, fimT2, fimSub].forEach((e, i) => set(e, { opacity: seg(t, 21.2 + i * 0.15, 21.9 + i * 0.15), transform: `translate(0 ${sobeFim})` }))
+  set(fimCta, { opacity: seg(t, 21.9, 22.5), transform: `translate(0 ${lerp(20, 0, seg(t, 21.9, 22.5, easeOut))})` })
+  set(fim, { opacity: vFim })
+
+  set(svg, { opacity: saida })
+}
+
+// ---------- modos ----------
+window.render = render
+window.DURACAO = DUR
+const parado = new URLSearchParams(location.search).get('t')
+document.fonts.ready.then(() => {
+  window.pronto = true
+  if (parado !== null) { render(parseFloat(parado)); return }
+  const inicio = performance.now()
+  const loop = (agora) => { render(((agora - inicio) / 1000) % DUR); requestAnimationFrame(loop) }
+  requestAnimationFrame(loop)
+})
+render(0)
+</script>
+</body>
+</html>

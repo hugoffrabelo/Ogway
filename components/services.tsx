@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Reveal } from '@/components/reveal'
 import { BlocoCaso, type Fundo } from '@/components/bloco-caso'
+import { VideoApresentacao } from '@/components/video-apresentacao'
 
 // "Como posso ajudar" organizado pela situação do visitante, não pelo nome
 // do serviço: quem chega reconhece o próprio caso em uma frase e vai direto
@@ -88,6 +89,10 @@ export function Services() {
               Não sabe? Faça a autoavaliação.
             </Link>
           </p>
+        </Reveal>
+
+        <Reveal className="mt-14 lg:mt-20">
+          <VideoApresentacao />
         </Reveal>
 
         <ul className="mt-14 flex flex-col gap-5 lg:mt-20 lg:gap-6">
