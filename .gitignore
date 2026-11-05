@@ -14,3 +14,5 @@ node_modules
 .next/
 .DS_Store
 *.tsbuildinfo
+# export estático do GitHub Pages (next build com GH_PAGES=true)
+/out/
