@@ -1,5 +1,5 @@
-import { ShellPattern } from '@/components/shell-pattern'
-import { Shell3D } from '@/components/shell-3d'
+import Link from 'next/link'
+import { Shell3DLazy } from '@/components/shell-3d-lazy'
 
 // Referência Lovisa Malin (paleta em app/tokens.css) + fontes registradas
 // em app/layout.tsx — ver components/pillars.tsx pra mais contexto.
@@ -12,27 +12,19 @@ export function Hero() {
   return (
     <section
       id="topo"
-      className="relative overflow-hidden"
+      className="relative overflow-hidden lg:bg-[var(--lovisa-navy)]"
       aria-labelledby="hero-title"
       style={bodyFont}
     >
-      <ShellPattern
-        className="mesh-fade absolute inset-0 h-full w-full text-primary"
-        opacity={0.06}
-        size={54}
-      />
-
-      {/* faixa navy: uma hipotenusa única, do topo (62% de largura) até o
-          canto inferior direito, por trás do objeto 3D. Só a partir de lg,
-          onde o objeto 3D também aparece; abaixo disso o texto não cabe
-          dentro da faixa, então o mobile mantém o fundo claro original. */}
+      {/* a partir de lg a seção é navy e um triângulo creme cobre o canto
+          superior direito — mesma hipotenusa de antes (do topo a 62% até o
+          canto inferior direito), mas o texto fica sobre o fundo navy da
+          própria seção, o que mantém a medição de contraste correta. Abaixo
+          de lg o objeto 3D some e o fundo fica claro. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 z-0 hidden lg:block"
-        style={{
-          backgroundColor: NAVY,
-          clipPath: 'polygon(0 0, 62% 0, 100% 100%, 0 100%)',
-        }}
+        className="absolute inset-0 z-0 hidden bg-background lg:block"
+        style={{ clipPath: 'polygon(62% 0, 100% 0, 100% 100%)' }}
       />
       {/* listra bege colada na borda esquerda, por cima da faixa navy */}
       <div
@@ -40,65 +32,39 @@ export function Hero() {
         className="absolute inset-y-0 left-0 z-0 hidden w-5 lg:block"
         style={{ backgroundColor: CAMEL }}
       />
-      {/* very subtle warm glow so the mesh cells near the object catch light */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-24 right-8 z-0 hidden h-96 w-96 rounded-full bg-accent/12 blur-3xl lg:block"
-      />
 
       {/* 3D focal shell — layered accent, never competing with the copy */}
-      <Shell3D className="pointer-events-none absolute top-4 right-0 z-0 hidden h-[32rem] w-[38rem] opacity-95 lg:block" />
+      <Shell3DLazy className="pointer-events-none absolute top-10 right-0 z-0 hidden h-[32rem] w-[38rem] lg:block" />
 
-      {/* soft vignette + shallow depth-of-field focus */}
-      <div
-        aria-hidden="true"
-        className="hero-vignette pointer-events-none absolute inset-0"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background"
-      />
-
-      <div className="relative z-10 mx-auto max-w-6xl px-6 pt-20 pb-24 lg:px-8 lg:pt-28 lg:pb-32">
-        <p
-          className="rise-in rise-in-1 mb-8 flex items-center gap-3 text-sm font-light tracking-[0.2em] text-muted-foreground uppercase lg:text-white/60"
-          style={bodyFont}
-        >
-          <span className="h-px w-8" style={{ backgroundColor: CAMEL }} />
-          Encarregado de dados para saúde
-        </p>
-
+      <div className="relative z-10 mx-auto flex max-w-6xl flex-col justify-center px-6 pt-20 pb-24 lg:min-h-[44rem] lg:px-8 lg:py-28">
         <h1
           id="hero-title"
-          className="rise-in rise-in-2 max-w-2xl text-5xl leading-[1.05] font-medium tracking-wide text-balance text-primary uppercase sm:text-6xl lg:text-7xl lg:text-white"
+          className="max-w-3xl text-4xl leading-[1.02] font-medium tracking-[0.01em] text-balance text-primary uppercase sm:text-6xl lg:text-7xl lg:text-white"
           style={headingFont}
         >
-          Você cuida das <span style={{ color: CAMEL }}>pessoas</span>. Nós
-          cuidamos da <span style={{ color: CAMEL }}>confiança</span> delas.
+          Você cuida das pessoas.
         </h1>
 
-        <p
-          className="rise-in rise-in-3 mt-8 max-w-xl font-light text-lg leading-relaxed text-muted-foreground lg:text-white/70"
-          style={bodyFont}
-        >
-          Proteção de dados contínua para sua clínica, conduzida por quem
-          entende de saúde.
+        <p className="mt-8 max-w-[34rem] text-xl leading-relaxed text-foreground sm:text-2xl lg:text-white/90">
+          Nós cuidamos da confiança delas. Adequação à LGPD, encarregado de
+          dados (DPO) e consultoria para clínicas de Porto Alegre e região, com
+          quem entende de saúde.
         </p>
 
-        <div className="rise-in rise-in-4 mt-12 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
-          <a
-            href="#contato"
-            className="group inline-flex h-12 items-center justify-center rounded-full px-8 text-base font-medium shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-8px_rgba(189,160,120,0.7)] active:translate-y-0"
+        <div className="rise-in rise-in-1 mt-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
+          <Link
+            href="/#contato"
+            className="inline-flex h-12 items-center justify-center rounded-full px-8 text-base font-medium transition-[filter,transform] duration-300 hover:-translate-y-0.5 hover:brightness-105 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--lovisa-navy)] focus-visible:outline-none active:translate-y-0"
             style={{ backgroundColor: CAMEL, color: NAVY }}
           >
             Agende uma conversa
-          </a>
-          <span
-            className="text-sm text-muted-foreground lg:text-white/60"
-            style={bodyFont}
+          </Link>
+          <Link
+            href="/autoavaliacao"
+            className="text-base text-foreground underline decoration-1 underline-offset-4 transition-colors hover:text-[var(--lovisa-camel)] lg:text-white"
           >
-            Conversa inicial sem compromisso, no seu tempo.
-          </span>
+            Ou faça a autoavaliação gratuita
+          </Link>
         </div>
       </div>
     </section>

@@ -22,12 +22,15 @@ export function About() {
 
       <div className="relative mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
-          <p className="mb-8 flex items-center gap-3 text-sm font-light tracking-[0.2em] text-muted-foreground uppercase">
-            <span className="h-px w-8" style={{ backgroundColor: CAMEL }} />
-            Quem cuida
-          </p>
+          <h2
+            id="about-title"
+            className="text-3xl leading-tight font-medium tracking-wide uppercase sm:text-4xl lg:text-5xl"
+            style={{ ...headingFont, color: NAVY }}
+          >
+            Quem <span style={{ color: 'var(--lovisa-camel-ink)' }}>cuida</span>
+          </h2>
 
-          <div className="flex items-center gap-4">
+          <div className="mt-10 flex items-center gap-4">
             <div
               className="flex h-12 w-12 items-center justify-center rounded-full text-lg font-medium text-white"
               style={{ ...headingFont, backgroundColor: NAVY }}
@@ -36,19 +39,18 @@ export function About() {
             </div>
             <div>
               <p
-                id="about-title"
                 className="text-lg font-medium tracking-wide uppercase"
                 style={{ ...headingFont, color: NAVY }}
               >
                 Hugo França
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground/80">
                 Encarregado de Dados · Ogway
               </p>
             </div>
           </div>
 
-          <p className="mt-8 font-light leading-relaxed text-muted-foreground">
+          <p className="mt-8 max-w-[62ch] text-lg leading-relaxed text-foreground">
             Sou especialista em proteção de dados, com trabalho consistente
             em GRC e segurança da informação no setor financeiro. A saúde
             entrou na minha trajetória por um caminho mais pessoal: cresci
@@ -58,7 +60,7 @@ export function About() {
             do compliance financeiro, aplicado a um setor que conheço de
             dentro.
           </p>
-          <p className="mt-6 font-light leading-relaxed text-muted-foreground">
+          <p className="mt-6 max-w-[62ch] text-lg leading-relaxed text-foreground">
             Acompanho pessoalmente cada clínica sob minha responsabilidade:
             sem central de atendimento, sem revezamento de analista. Quando
             você precisa de algo, fala comigo.

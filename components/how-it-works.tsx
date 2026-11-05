@@ -1,93 +1,58 @@
+import Link from 'next/link'
 import { ShellPattern } from '@/components/shell-pattern'
+import { Reveal } from '@/components/reveal'
+import { AutodiagnosticoDemo } from '@/components/autodiagnostico-demo'
 
-// Mesma referência Lovisa Malin do Pillars — ver components/pillars.tsx.
+// Antes: as 6 etapas da adequação em texto. Agora a home mostra a
+// autoavaliação funcionando (animação em código) e leva para /autoavaliacao;
+// as 6 etapas detalhadas ficam em /servicos/adequacao-lgpd-clinicas.
+const NAVY = 'var(--lovisa-navy)'
 const CAMEL = 'var(--lovisa-camel)'
 const headingFont = { fontFamily: 'var(--font-cinzel)' }
 const bodyFont = { fontFamily: 'var(--font-poppins)' }
 
-const highlight = { color: CAMEL }
-
-const steps = [
-  {
-    n: '01',
-    title: (
-      <>
-        Uma conversa para <span style={highlight}>entender</span>
-      </>
-    ),
-    body: 'Começamos ouvindo. Em 20 minutos, mapeamos onde os dados dos pacientes passam e avaliamos 40 pontos de controle exigidos pela lei. Sem formulários frios, sem jargão — você sai com um score claro de onde a clínica está.',
-  },
-  {
-    n: '02',
-    title: (
-      <>
-        Um plano no seu <span style={highlight}>ritmo</span>
-      </>
-    ),
-    body: 'Priorizamos o que a LGPD exige primeiro: nomeação formal do encarregado, mapeamento de dados, documentos obrigatórios e canal para pacientes. Cada passo é explicado em português claro, no tempo da sua equipe.',
-  },
-  {
-    n: '03',
-    title: (
-      <>
-        <span style={highlight}>Conformidade</span> que continua
-      </>
-    ),
-    body: 'Prazos legais acompanhados, respostas a pacientes dentro do prazo que a lei determina, documentação sempre pronta para uma fiscalização. Você não pensa mais nisso — nós pensamos.',
-  },
-]
-
 export function HowItWorks() {
   return (
     <section
-      id="como-funciona"
-      className="relative overflow-hidden bg-primary text-white"
+      id="autodiagnostico"
+      className="relative overflow-hidden text-white"
       aria-labelledby="how-title"
-      style={{ backgroundColor: 'var(--lovisa-navy)', ...bodyFont }}
+      style={{ backgroundColor: NAVY, ...bodyFont }}
     >
-      <ShellPattern
-        className="absolute inset-0 h-full w-full text-white"
-        opacity={0.06}
-        size={60}
-      />
-      <div className="relative mx-auto max-w-6xl px-6 py-24 lg:px-8 lg:py-32">
-        <div className="max-w-2xl">
-          <p className="mb-5 flex items-center gap-3 text-sm font-light tracking-[0.2em] text-white/60 uppercase">
-            <span className="h-px w-8" style={{ backgroundColor: CAMEL }} />
-            Como funciona
-          </p>
+      <ShellPattern className="absolute inset-0 h-full w-full text-white" opacity={0.06} size={60} />
+      <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 py-24 lg:grid-cols-[1fr_1.1fr] lg:gap-20 lg:px-8 lg:py-32">
+        <Reveal>
           <h2
             id="how-title"
             className="text-3xl leading-tight font-medium tracking-wide text-balance uppercase sm:text-4xl lg:text-5xl"
             style={headingFont}
           >
-            Três passos calmos, do primeiro contato à{' '}
-            <span style={highlight}>conformidade contínua</span> com a{' '}
-            <span style={highlight}>LGPD</span>.
+            Como está sua <span style={{ color: CAMEL }}>clínica</span>?
           </h2>
-        </div>
+          <p className="mt-6 max-w-[40ch] text-lg leading-relaxed text-white/90">
+            Responda 20 perguntas e veja o nível de maturidade da clínica em
+            cinco minutos. Gratuito.
+          </p>
+          <div className="mt-10 flex flex-col items-start gap-5">
+            <Link
+              href="/autoavaliacao"
+              className="inline-flex h-12 items-center justify-center rounded-full px-8 text-base font-medium transition-[filter,transform] hover:-translate-y-0.5 hover:brightness-105 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--lovisa-navy)] focus-visible:outline-none active:translate-y-0"
+              style={{ backgroundColor: CAMEL, color: NAVY }}
+            >
+              Fazer minha autoavaliação
+            </Link>
+            <Link
+              href="/servicos/adequacao-lgpd-clinicas"
+              className="text-white/90 underline decoration-1 underline-offset-4 transition-colors hover:text-[var(--lovisa-camel)]"
+            >
+              Ver as 6 etapas da adequação
+            </Link>
+          </div>
+        </Reveal>
 
-        <ol className="mt-16 grid gap-12 md:grid-cols-3 md:gap-8">
-          {steps.map((step) => (
-            <li key={step.n} className="border-t border-white/15 pt-6">
-              <span
-                className="text-2xl"
-                style={{ ...headingFont, color: CAMEL }}
-              >
-                {step.n}
-              </span>
-              <h3
-                className="mt-4 text-2xl leading-snug font-medium tracking-wide uppercase"
-                style={headingFont}
-              >
-                {step.title}
-              </h3>
-              <p className="mt-4 font-light leading-relaxed text-white/70">
-                {step.body}
-              </p>
-            </li>
-          ))}
-        </ol>
+        <Reveal delay={120}>
+          <AutodiagnosticoDemo />
+        </Reveal>
       </div>
     </section>
   )

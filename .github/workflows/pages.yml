@@ -54,6 +54,13 @@ jobs:
           # Dummy: lib/api-url.ts exige a variável na importação, mas a
           # landing não faz nenhuma chamada de API — mesmo padrão do ci.yml.
           NEXT_PUBLIC_API_URL: http://api.ci.invalid
+          # Formulário de contato e aviso de privacidade (lib/contact.ts).
+          # Definir em Settings → Secrets and variables → Actions → Variables.
+          NEXT_PUBLIC_CONTACT_ENDPOINT: ${{ vars.CONTACT_ENDPOINT }}
+          NEXT_PUBLIC_CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL }}
+          # URL pública sem barra no fim (canonical, sitemap, schema). Vazia =
+          # https://hugoffrabelo.github.io/Ogway. Ver docs/SEO-pendencias.md.
+          NEXT_PUBLIC_SITE_URL: ${{ vars.SITE_URL }}
 
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 

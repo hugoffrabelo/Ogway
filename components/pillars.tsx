@@ -44,11 +44,6 @@ export function Pillars() {
 
       <div className="relative mx-auto max-w-6xl px-6 lg:px-8">
         <Reveal>
-          <p className="mb-10 flex items-center gap-3 text-sm font-light tracking-[0.2em] text-white/60 uppercase">
-            <span className="h-px w-8" style={{ backgroundColor: CAMEL }} />
-            Nossos pilares
-          </p>
-
           <h2
             id="pillars-title"
             className="flex flex-wrap items-center gap-x-5 gap-y-8 uppercase tracking-wide"
@@ -89,16 +84,16 @@ export function Pillars() {
 
         <Reveal
           delay={100}
-          className="mt-16 flex flex-col items-start gap-8 border-t border-white/15 pt-10 sm:flex-row sm:items-end sm:justify-between"
+          className="mt-16 flex flex-col items-start gap-8 sm:flex-row sm:items-end sm:justify-between"
         >
-          <p className="max-w-md font-light leading-relaxed text-white/70">
+          <p className="max-w-md text-lg leading-relaxed text-white/90">
             Isso não é um slogan — é como organizamos o trabalho todo mês:
             perto o suficiente pra conhecer sua clínica pelo nome, técnico o
             suficiente pra levar a LGPD a sério.
           </p>
           <a
             href="#contato"
-            className="group inline-flex h-12 shrink-0 items-center justify-center rounded-full px-8 text-base font-medium shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-8px_rgba(189,160,120,0.7)] active:translate-y-0"
+            className="inline-flex h-12 shrink-0 items-center justify-center rounded-full px-8 text-base font-medium transition-[filter,transform] duration-300 hover:-translate-y-0.5 hover:brightness-105 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--lovisa-navy)] focus-visible:outline-none active:translate-y-0"
             style={{ backgroundColor: CAMEL, color: NAVY }}
           >
             Agende uma conversa
