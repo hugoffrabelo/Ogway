@@ -114,7 +114,7 @@ export function Contact() {
               <p className="mt-4 max-w-sm leading-relaxed text-foreground">
                 {viaMailto
                   ? 'Abrimos o seu e-mail com a mensagem pronta. É só enviar por lá.'
-                  : 'Recebemos sua mensagem e respondemos em até dois dias úteis.'}
+                  : 'Recebemos sua mensagem e entraremos em contato em breve.'}
               </p>
             </div>
           ) : (

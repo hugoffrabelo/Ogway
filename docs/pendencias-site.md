@@ -7,7 +7,6 @@
       à direita, 3x) e rever a faixa navy de documentos avulsos.
 - [x] Atendimento presencial removido (05/11): só online. Textos da Ogway
       passados para a 1ª pessoa do plural.
-- [ ] Confirmar textos: retenção de 12 meses
-      (`app/privacidade/page.tsx`), "respondemos em até dois dias úteis"
-      (`components/contact.tsx` e `components/autoavaliacao/questionario.tsx`).
+- [x] Prazo "respondemos em até dois dias úteis" removido (05/11).
+- [ ] Confirmar texto: retenção de 12 meses (`app/privacidade/page.tsx`).
 - [ ] Configurar `CONTACT_EMAIL` ou `CONTACT_ENDPOINT` (Actions → Variables).

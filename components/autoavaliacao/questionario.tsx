@@ -331,7 +331,7 @@ function Resultado({
         <p role="status" className="mt-4 max-w-[60ch] text-lg leading-relaxed text-foreground">
           {viaMailto
             ? 'Abrimos o seu e-mail com o resultado pronto. É só enviar por lá.'
-            : 'Recebemos seu resultado. Respondemos em até dois dias úteis para combinar a conversa.'}
+            : 'Recebemos seu resultado e entraremos em contato para combinar a conversa.'}
         </p>
       ) : (
         <form onSubmit={enviar} className="relative mt-6 grid max-w-2xl gap-5 sm:grid-cols-2" aria-labelledby="pedir-diagnostico">
