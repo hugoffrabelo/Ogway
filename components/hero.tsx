@@ -34,7 +34,7 @@ export function Hero() {
       />
 
       {/* 3D focal shell — layered accent, never competing with the copy */}
-      <Shell3DLazy className="pointer-events-none absolute top-10 right-0 z-0 hidden h-[32rem] w-[38rem] lg:block" />
+      <Shell3DLazy className="pointer-events-none absolute -top-4 right-0 z-0 hidden h-[39rem] w-[38rem] lg:block" />
 
       <div className="relative z-10 mx-auto flex max-w-6xl flex-col justify-center px-6 pt-20 pb-24 lg:min-h-[44rem] lg:px-8 lg:py-28">
         <h1
